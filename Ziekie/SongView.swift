@@ -7,11 +7,24 @@
 
 import SwiftUI
 import MusicKit
+import MediaPlayer
+
 
 struct SongView: View {
     
-    var isPreparedToPlay: Bool
+    var isPreparedToPlay = true
     
+    @ObservedObject private var state = ApplicationMusicPlayer.shared.state
+    
+//    @Binding var musicPlayer: MPMusicPlayerController
+    @State private var isPlaying = false
+ //   @Binding var currentSong: Song
+    
+    @State private var selection = 0
+    @State private var musicPlayer = MPMusicPlayerController.applicationMusicPlayer
+    @State private var currentSong = MusicItem(title: "De Wielen van de Bus", url: URL(string: "https://music.apple.com/nl/album/de-wielen-van-de-bus/1134585515?i=1134585819&l=en"), image: "Bus", playlist: .kindjes, playCount: 0)
+    
+        
     var body: some View {
             ZStack {
                 LinearGradient(colors: [Color("Background1"), Color("Background2")], startPoint: .topLeading, endPoint: .bottomTrailing)
@@ -25,6 +38,33 @@ struct SongView: View {
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                     playButtonRow
+                    
+                    // taken from other nursery rhyme project
+                    Text(self.musicPlayer.nowPlayingItem?.title ?? "Not Playing")
+                        .font(Font.system(.title).bold())
+                        .multilineTextAlignment(.center)
+                    Text(self.musicPlayer.nowPlayingItem?.artist ?? "")
+                        .font(.system(.headline))
+                    Button(action: {
+                        if self.musicPlayer.playbackState == .paused || self.musicPlayer.playbackState == .stopped {
+                            self.musicPlayer.play()
+                            self.isPlaying = true
+                        } else {
+                            self.musicPlayer.pause()
+                            self.isPlaying = false
+                        }
+                    }) {
+                        ZStack {
+                            Circle()
+                                .frame(width: 80, height: 80)
+                                .accentColor(.pink)
+                                .shadow(radius: 10)
+                            Image(systemName: self.isPlaying ? "pause.fill" : "play.fill")
+                                .foregroundColor(.white)
+                                .font(.system(.title))
+                        }
+                    }
+                    // untill here
                 }
             }
         // Start observing changes to the music subscription.
@@ -51,9 +91,13 @@ struct SongView: View {
     @State private var isPlaybackQueueSet = false
     
     /// `true` when the player is playing.
+    ///
+    /* Turn back on if other example code does not work.
     private var isPlaying: Bool {
         return (playerState.playbackStatus == .playing)
     }
+     */
+    
     
     /// The Apple Music subscription of the current user.
     @State private var musicSubscription: MusicSubscription?

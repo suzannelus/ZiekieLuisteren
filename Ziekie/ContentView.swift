@@ -13,6 +13,7 @@ struct WelcomeView: View {
     let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     
     
+    
    // MARK: - Properties
     
     /// The current authorization status of MusicKit.
