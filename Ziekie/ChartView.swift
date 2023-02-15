@@ -28,6 +28,7 @@ struct ChartView: View {
         }
        // .foregroundStyle(.linearGradient(colors: [.blue, .purple], startPoint: .top, endPoint: .bottom))
         .frame(height: 300)
+        .padding(20)
     }
 }
 
