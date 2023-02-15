@@ -7,17 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		3F6D0028299BB575007C1652 /* NavigationStackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D0027299BB575007C1652 /* NavigationStackView.swift */; };
 		3F6D002A299BB6FF007C1652 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D0029299BB6FF007C1652 /* Data.swift */; };
-		3F6D002C299BBA2F007C1652 /* MessageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D002B299BBA2F007C1652 /* MessageView.swift */; };
-		3F6D002E299BBAF1007C1652 /* MenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D002D299BBAF1007C1652 /* MenuView.swift */; };
-		3F6D0030299BD159007C1652 /* ChartView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D002F299BD159007C1652 /* ChartView.swift */; };
-		3F6D0032299BD70F007C1652 /* GridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D0031299BD70F007C1652 /* GridView.swift */; };
-		3F6D0034299BDE14007C1652 /* CardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D0033299BDE14007C1652 /* CardView.swift */; };
-		3F6D0036299BE27B007C1652 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D0035299BE27B007C1652 /* DetailView.swift */; };
-		3F6D0038299C0CC9007C1652 /* RadialLayoutView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D0037299C0CC9007C1652 /* RadialLayoutView.swift */; };
-		3F6D003A299CCC22007C1652 /* CardReflectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D0039299CCC22007C1652 /* CardReflectionView.swift */; };
 		3F6D005B299CEA56007C1652 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D005A299CEA56007C1652 /* ContentView.swift */; };
+		3F6D0075299D2535007C1652 /* SongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D0074299D2535007C1652 /* SongView.swift */; };
 		3F6DFFC5299A92FA007C1652 /* ZiekieApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6DFFC4299A92FA007C1652 /* ZiekieApp.swift */; };
 		3F6DFFC9299A92FC007C1652 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F6DFFC8299A92FC007C1652 /* Assets.xcassets */; };
 		3F6DFFCC299A92FC007C1652 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F6DFFCB299A92FC007C1652 /* Preview Assets.xcassets */; };
@@ -25,6 +17,7 @@
 		3F6DFFE0299A92FC007C1652 /* ZiekieUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6DFFDF299A92FC007C1652 /* ZiekieUITests.swift */; };
 		3F6DFFE2299A92FC007C1652 /* ZiekieUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6DFFE1299A92FC007C1652 /* ZiekieUITestsLaunchTests.swift */; };
 		3F6DFFEF299A930E007C1652 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6DFFEE299A930E007C1652 /* SearchView.swift */; };
+		3FFA8EDD299D398E0090EDE2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFA8EDC299D398E0090EDE2 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -45,17 +38,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		3F6D0027299BB575007C1652 /* NavigationStackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStackView.swift; sourceTree = "<group>"; };
 		3F6D0029299BB6FF007C1652 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
-		3F6D002B299BBA2F007C1652 /* MessageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageView.swift; sourceTree = "<group>"; };
-		3F6D002D299BBAF1007C1652 /* MenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuView.swift; sourceTree = "<group>"; };
-		3F6D002F299BD159007C1652 /* ChartView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChartView.swift; sourceTree = "<group>"; };
-		3F6D0031299BD70F007C1652 /* GridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridView.swift; sourceTree = "<group>"; };
-		3F6D0033299BDE14007C1652 /* CardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardView.swift; sourceTree = "<group>"; };
-		3F6D0035299BE27B007C1652 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
-		3F6D0037299C0CC9007C1652 /* RadialLayoutView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadialLayoutView.swift; sourceTree = "<group>"; };
-		3F6D0039299CCC22007C1652 /* CardReflectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardReflectionView.swift; sourceTree = "<group>"; };
 		3F6D005A299CEA56007C1652 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		3F6D0074299D2535007C1652 /* SongView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongView.swift; sourceTree = "<group>"; };
 		3F6DFFC1299A92FA007C1652 /* Ziekie.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Ziekie.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		3F6DFFC4299A92FA007C1652 /* ZiekieApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZiekieApp.swift; sourceTree = "<group>"; };
 		3F6DFFC8299A92FC007C1652 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -67,6 +52,7 @@
 		3F6DFFE1299A92FC007C1652 /* ZiekieUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ZiekieUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		3F6DFFEE299A930E007C1652 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3F6DFFF0299A93A7007C1652 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		3FFA8EDC299D398E0090EDE2 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -119,16 +105,9 @@
 			children = (
 				3F6DFFF0299A93A7007C1652 /* Info.plist */,
 				3F6D005A299CEA56007C1652 /* ContentView.swift */,
+				3FFA8EDC299D398E0090EDE2 /* HomeView.swift */,
+				3F6D0074299D2535007C1652 /* SongView.swift */,
 				3F6DFFC4299A92FA007C1652 /* ZiekieApp.swift */,
-				3F6D0037299C0CC9007C1652 /* RadialLayoutView.swift */,
-				3F6D0033299BDE14007C1652 /* CardView.swift */,
-				3F6D0039299CCC22007C1652 /* CardReflectionView.swift */,
-				3F6D0035299BE27B007C1652 /* DetailView.swift */,
-				3F6D0031299BD70F007C1652 /* GridView.swift */,
-				3F6D002F299BD159007C1652 /* ChartView.swift */,
-				3F6D002D299BBAF1007C1652 /* MenuView.swift */,
-				3F6D002B299BBA2F007C1652 /* MessageView.swift */,
-				3F6D0027299BB575007C1652 /* NavigationStackView.swift */,
 				3F6D0029299BB6FF007C1652 /* Data.swift */,
 				3F6DFFEE299A930E007C1652 /* SearchView.swift */,
 				3F6DFFC8299A92FC007C1652 /* Assets.xcassets */,
@@ -292,19 +271,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F6D002E299BBAF1007C1652 /* MenuView.swift in Sources */,
-				3F6D002C299BBA2F007C1652 /* MessageView.swift in Sources */,
-				3F6D0038299C0CC9007C1652 /* RadialLayoutView.swift in Sources */,
 				3F6D002A299BB6FF007C1652 /* Data.swift in Sources */,
-				3F6D0034299BDE14007C1652 /* CardView.swift in Sources */,
-				3F6D0036299BE27B007C1652 /* DetailView.swift in Sources */,
-				3F6D003A299CCC22007C1652 /* CardReflectionView.swift in Sources */,
-				3F6D0028299BB575007C1652 /* NavigationStackView.swift in Sources */,
 				3F6DFFEF299A930E007C1652 /* SearchView.swift in Sources */,
+				3F6D0075299D2535007C1652 /* SongView.swift in Sources */,
+				3FFA8EDD299D398E0090EDE2 /* HomeView.swift in Sources */,
 				3F6DFFC5299A92FA007C1652 /* ZiekieApp.swift in Sources */,
 				3F6D005B299CEA56007C1652 /* ContentView.swift in Sources */,
-				3F6D0032299BD70F007C1652 /* GridView.swift in Sources */,
-				3F6D0030299BD159007C1652 /* ChartView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

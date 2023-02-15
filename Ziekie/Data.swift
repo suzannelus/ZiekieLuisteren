@@ -7,32 +7,33 @@
 
 import Foundation
 
-struct NavigationItem: Identifiable, Hashable {
-    var id = UUID()
-    var title: String
-    var icon: String
-    var menu: Menu
+struct MusicItem: Hashable {
+   
+    
+ //   var id = MusicItemID
+    var duration: TimeInterval?
+    var title: String?
+    var url: URL?
+    var image: String?
+    var playlist: Playlist
+    var playCount: Int?
+    var lastPlayedDate: Date?
+
 }
 
 
-var navigationItems =
+var MusicItems =
 [
-    NavigationItem(title: "Compass App", icon: "safari", menu: .compass),
-    NavigationItem(title: "3D Card", icon: "lanyardcard", menu: .card),
-    NavigationItem(title: "Radial Layout", icon: "clock", menu: .radial),
-    NavigationItem(title: "Gooey Action Button", icon: "plus.circle", menu: .actionbutton),
-    NavigationItem(title: "Gooey Menu", icon: "drop", menu: .gooey),
-    NavigationItem(title: "Charts", icon: "chart.xyaxis.line", menu: .charts),
-    NavigationItem(title: "Half Sheet", icon: "rectangle.portrait.bottomhalf.filled", menu: .halfsheet),
+    MusicItem(title: "In de Maneschijn", image: "maneschijn2-removebg", playlist: .kindjes)
+    
 ]
 
 
-enum Menu: String {
-    case compass
-    case card
-    case charts
-    case radial
-    case halfsheet
-    case gooey
-    case actionbutton
+enum Playlist: String {
+    case kindjes
+    case disney
+    case sesamstraat
+    case sinterklaas
+    case kerst
+    case verhalen
 }

@@ -11,7 +11,7 @@ import SwiftUI
 struct ZiekieApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            WelcomeView(musicAuthorizationStatus: .constant(.notDetermined))
         }
     }
 }
