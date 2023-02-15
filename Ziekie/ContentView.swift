@@ -49,7 +49,7 @@ struct WelcomeView: View {
                     .font(.largeTitle.width(.condensed))
                     .fontWeight(.bold)
                     .foregroundColor(Color("TextColor"))
-                Image("Hero-removebg")
+                Image("DikkertjeDap")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
                     .shadow(radius: 30)

@@ -24,8 +24,7 @@ struct MusicItem: Hashable {
 
 var MusicItems =
 [
-    MusicItem(title: "In de Maneschijn", image: "maneschijn2-removebg", playlist: .kindjes)
-    
+    MusicItem(title: "De Wielen van de Bus", playlist: .kindjes)
 ]
 
 

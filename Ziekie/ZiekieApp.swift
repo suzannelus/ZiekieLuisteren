@@ -11,7 +11,8 @@ import SwiftUI
 struct ZiekieApp: App {
     var body: some Scene {
         WindowGroup {
-            WelcomeView(musicAuthorizationStatus: .constant(.notDetermined))
+            SongView(isPreparedToPlay: true)
+          //  WelcomeView(musicAuthorizationStatus: .constant(.notDetermined))
         }
     }
 }

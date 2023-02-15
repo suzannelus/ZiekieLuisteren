@@ -9,17 +9,24 @@ import SwiftUI
 import MusicKit
 
 struct SongView: View {
+    
+    var isPreparedToPlay: Bool
+    
     var body: some View {
-        NavigationView {
             ZStack {
                 LinearGradient(colors: [Color("Background1"), Color("Background2")], startPoint: .topLeading, endPoint: .bottomTrailing)
                     .ignoresSafeArea()
                 VStack {
-                    
+                    Text("In de maneschijn")
+                        .font(.largeTitle.width(.condensed))
+                        .fontWeight(.bold)
+                        .foregroundColor(Color("TextColor"))
+                    Image("Maneschijn")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                    playButtonRow
                 }
             }
-        }
-        .navigationTitle("Kindjes")
         // Start observing changes to the music subscription.
         .task {
             for await subscription in MusicSubscription.subscriptionUpdates {
@@ -151,6 +158,6 @@ struct SongView: View {
 
 struct SongView_Previews: PreviewProvider {
     static var previews: some View {
-        SongView()
+        SongView(isPreparedToPlay: true)
     }
 }
