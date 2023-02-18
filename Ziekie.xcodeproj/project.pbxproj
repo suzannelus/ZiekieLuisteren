@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		3F1F94DA299FC2AE00077B2B /* SongRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1F94D9299FC2AE00077B2B /* SongRow.swift */; };
 		3F6D002A299BB6FF007C1652 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D0029299BB6FF007C1652 /* Data.swift */; };
 		3F6D005B299CEA56007C1652 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D005A299CEA56007C1652 /* ContentView.swift */; };
 		3F6D0075299D2535007C1652 /* SongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D0074299D2535007C1652 /* SongView.swift */; };
@@ -38,6 +39,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		3F1F94D9299FC2AE00077B2B /* SongRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongRow.swift; sourceTree = "<group>"; };
 		3F6D0029299BB6FF007C1652 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		3F6D005A299CEA56007C1652 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3F6D0074299D2535007C1652 /* SongView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongView.swift; sourceTree = "<group>"; };
@@ -106,6 +108,7 @@
 				3F6DFFF0299A93A7007C1652 /* Info.plist */,
 				3F6D005A299CEA56007C1652 /* ContentView.swift */,
 				3FFA8EDC299D398E0090EDE2 /* HomeView.swift */,
+				3F1F94D9299FC2AE00077B2B /* SongRow.swift */,
 				3F6D0074299D2535007C1652 /* SongView.swift */,
 				3F6DFFC4299A92FA007C1652 /* ZiekieApp.swift */,
 				3F6D0029299BB6FF007C1652 /* Data.swift */,
@@ -272,6 +275,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F6D002A299BB6FF007C1652 /* Data.swift in Sources */,
+				3F1F94DA299FC2AE00077B2B /* SongRow.swift in Sources */,
 				3F6DFFEF299A930E007C1652 /* SearchView.swift in Sources */,
 				3F6D0075299D2535007C1652 /* SongView.swift in Sources */,
 				3FFA8EDD299D398E0090EDE2 /* HomeView.swift in Sources */,

@@ -9,7 +9,27 @@ import SwiftUI
 
 struct HomeView: View {
     var body: some View {
-      Text("Lijst van liedjes")
+        ZStack {
+            
+            NavigationStack {
+                VStack {
+                    List(musicItems) { item in
+                        NavigationLink(value: item) {
+                            SongRow(musicItems: item)
+                        }
+                        .navigationTitle("Kies een liedje")
+                        .navigationBarTitleDisplayMode(.automatic)
+                        .navigationDestination(for: MusicItem.self) { item in
+                            SongView(musicItems: item)
+                        }
+                        .listRowBackground(Color.accentColor.opacity(0.0))
+                    }
+                    .scrollContentBackground(.hidden)
+                    .background(LinearGradient(colors: [Color("Background1"), Color("Background2")], startPoint: .topLeading, endPoint: .bottomTrailing)
+                        .ignoresSafeArea())
+                }
+            }
+        }
     }
 }
 

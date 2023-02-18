@@ -14,6 +14,9 @@ struct SongView: View {
     
     var isPreparedToPlay = true
     
+    var musicItems: MusicItem
+
+    
     @ObservedObject private var state = ApplicationMusicPlayer.shared.state
     
 //    @Binding var musicPlayer: MPMusicPlayerController
@@ -30,15 +33,16 @@ struct SongView: View {
                 LinearGradient(colors: [Color("Background1"), Color("Background2")], startPoint: .topLeading, endPoint: .bottomTrailing)
                     .ignoresSafeArea()
                 VStack {
-                    Text("In de maneschijn")
+                    Text(musicItems.title)
                         .font(.largeTitle.width(.condensed))
                         .fontWeight(.bold)
                         .foregroundColor(Color("TextColor"))
-                    Image("Maneschijn")
+                    Image(musicItems.image!)
                         .resizable()
                         .aspectRatio(contentMode: .fit)
+                        .shadow(color: .accentColor, radius: 20)
                     playButtonRow
-                    
+                    /*
                     // taken from other nursery rhyme project
                     Text(self.musicPlayer.nowPlayingItem?.title ?? "Not Playing")
                         .font(Font.system(.title).bold())
@@ -65,6 +69,7 @@ struct SongView: View {
                         }
                     }
                     // untill here
+                     */
                 }
             }
         // Start observing changes to the music subscription.
@@ -202,6 +207,6 @@ struct SongView: View {
 
 struct SongView_Previews: PreviewProvider {
     static var previews: some View {
-        SongView(isPreparedToPlay: true)
+        SongView(isPreparedToPlay: true, musicItems: musicItems[0])
     }
 }
