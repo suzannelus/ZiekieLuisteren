@@ -11,12 +11,11 @@ import MusicKit
 @main
 struct ZiekieApp: App {
     
-   // @Binding var musicAuthorizationStatus: MusicAuthorization.Status
-
     var body: some Scene {
         WindowGroup {
+            HomeView()
            // SongView(isPreparedToPlay: true)
-            WelcomeView(musicAuthorizationStatus: .constant(.notDetermined))
+          //  WelcomeView(musicAuthorizationStatus: .constant(.notDetermined))
         }
     }
 }

@@ -150,10 +150,26 @@ struct SongView: View {
     private func handlePlayButtonSelected() {
         if !isPlaying {
             if !isPlaybackQueueSet {
+                Task {
+                  do {
+                    let songID = MusicItemID(musicItems.songID)
+                    let request = MusicCatalogResourceRequest<Song>(matching: \.id, equalTo: songID)
+                    let response = try await request.response()
+
+                    guard let song = response.items.first else {
+                      return
+                    }
+                    player.queue = [song]
+                    isPlaybackQueueSet = true
+                    beginPlaying()
+                  } catch {
+                    print(error)
+                  }
+                }
               //  player.queue = [albums]
              //   player.Queue([musicItems.songID])
-                isPlaybackQueueSet = true
-                beginPlaying()
+             //   isPlaybackQueueSet = true
+              //  beginPlaying()
             } else {
                 Task {
                     do {

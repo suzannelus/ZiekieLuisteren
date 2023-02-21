@@ -13,7 +13,6 @@ struct WelcomeView: View {
     let timer = Timer.publish(every: 0.1, on: .main, in: .common).autoconnect()
     
     
-    
    // MARK: - Properties
     
     /// The current authorization status of MusicKit.
@@ -35,23 +34,32 @@ struct WelcomeView: View {
         }
     }
     
+    var bal1: some View {
+        Circle()
+            
+    }
+    
     var Background: some View {
         LinearGradient(colors: [Color("Background1"), Color("Background2")], startPoint: .topLeading, endPoint: .bottomTrailing)
             .ignoresSafeArea()
     }
     
+    var AppTitel: some View {
+        LinearGradient(colors: [Color("TitleTextColor1"), Color("TitleTextColor1")], startPoint: .topLeading, endPoint: .bottomTrailing)
+            .frame(width: 300, height: 100)
+            .mask(Text("Ziekie Luisteren".uppercased())
+                .font(.largeTitle.width(.condensed))
+                .fontWeight(.bold))
+    }
+    
     var KiesLiedje: some View {
         VStack {
-            
-            Text("Ziekie Luisteren".uppercased())
-                .font(.largeTitle.width(.condensed))
-                .fontWeight(.bold)
-                .foregroundColor(Color("TextColor"))
+            AppTitel
             Image("Maneschijn")
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .shadow(radius: 30)
-            Text("Laat je kind zelf kiezen welk liedje ze willen horen door op de beschrijvende afbeeldingen te tikken")
+            Text("Laat je kinderen zelf kiezen welk liedje ze willen horen door op de beschrijvende afbeeldingen te tikken")
                 .foregroundColor(.accentColor)
                 .font(.title3.weight(.medium))
                 .multilineTextAlignment(.center)
@@ -85,10 +93,7 @@ struct WelcomeView: View {
                         }
                     }
                  */
-                Text("Ziekie Luisteren".uppercased())
-                    .font(.largeTitle.width(.condensed))
-                    .fontWeight(.bold)
-                    .foregroundColor(Color("TextColor"))
+                AppTitel
                 Image("DikkertjeDap")
                     .resizable()
                     .aspectRatio(contentMode: .fit)
