@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		3F1F94DA299FC2AE00077B2B /* SongRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F1F94D9299FC2AE00077B2B /* SongRow.swift */; };
+		3F4442A229A4D339007A6CB2 /* Roadmap in Frameworks */ = {isa = PBXBuildFile; productRef = 3F4442A129A4D339007A6CB2 /* Roadmap */; };
+		3F4442A429A4D374007A6CB2 /* Roadmap.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F4442A329A4D374007A6CB2 /* Roadmap.swift */; };
 		3F6D002A299BB6FF007C1652 /* Data.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D0029299BB6FF007C1652 /* Data.swift */; };
 		3F6D005B299CEA56007C1652 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D005A299CEA56007C1652 /* ContentView.swift */; };
 		3F6D0075299D2535007C1652 /* SongView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6D0074299D2535007C1652 /* SongView.swift */; };
@@ -40,6 +42,7 @@
 
 /* Begin PBXFileReference section */
 		3F1F94D9299FC2AE00077B2B /* SongRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongRow.swift; sourceTree = "<group>"; };
+		3F4442A329A4D374007A6CB2 /* Roadmap.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Roadmap.swift; sourceTree = "<group>"; };
 		3F6D0029299BB6FF007C1652 /* Data.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Data.swift; sourceTree = "<group>"; };
 		3F6D005A299CEA56007C1652 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		3F6D0074299D2535007C1652 /* SongView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongView.swift; sourceTree = "<group>"; };
@@ -62,6 +65,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3F4442A229A4D339007A6CB2 /* Roadmap in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -110,6 +114,7 @@
 				3FFA8EDC299D398E0090EDE2 /* HomeView.swift */,
 				3F1F94D9299FC2AE00077B2B /* SongRow.swift */,
 				3F6D0074299D2535007C1652 /* SongView.swift */,
+				3F4442A329A4D374007A6CB2 /* Roadmap.swift */,
 				3F6DFFC4299A92FA007C1652 /* ZiekieApp.swift */,
 				3F6D0029299BB6FF007C1652 /* Data.swift */,
 				3F6DFFEE299A930E007C1652 /* SearchView.swift */,
@@ -160,6 +165,9 @@
 			dependencies = (
 			);
 			name = Ziekie;
+			packageProductDependencies = (
+				3F4442A129A4D339007A6CB2 /* Roadmap */,
+			);
 			productName = Ziekie;
 			productReference = 3F6DFFC1299A92FA007C1652 /* Ziekie.app */;
 			productType = "com.apple.product-type.application";
@@ -232,6 +240,9 @@
 				Base,
 			);
 			mainGroup = 3F6DFFB8299A92FA007C1652;
+			packageReferences = (
+				3F4442A029A4D339007A6CB2 /* XCRemoteSwiftPackageReference "Roadmap" */,
+			);
 			productRefGroup = 3F6DFFC2299A92FA007C1652 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -278,6 +289,7 @@
 				3F1F94DA299FC2AE00077B2B /* SongRow.swift in Sources */,
 				3F6DFFEF299A930E007C1652 /* SearchView.swift in Sources */,
 				3F6D0075299D2535007C1652 /* SongView.swift in Sources */,
+				3F4442A429A4D374007A6CB2 /* Roadmap.swift in Sources */,
 				3FFA8EDD299D398E0090EDE2 /* HomeView.swift in Sources */,
 				3F6DFFC5299A92FA007C1652 /* ZiekieApp.swift in Sources */,
 				3F6D005B299CEA56007C1652 /* ContentView.swift in Sources */,
@@ -611,6 +623,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3F4442A029A4D339007A6CB2 /* XCRemoteSwiftPackageReference "Roadmap" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/AvdLee/Roadmap.git";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3F4442A129A4D339007A6CB2 /* Roadmap */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3F4442A029A4D339007A6CB2 /* XCRemoteSwiftPackageReference "Roadmap" */;
+			productName = Roadmap;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 3F6DFFB9299A92FA007C1652 /* Project object */;
 }

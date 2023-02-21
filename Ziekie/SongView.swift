@@ -25,7 +25,7 @@ struct SongView: View {
     
     @State private var selection = 0
     @State private var musicPlayer = MPMusicPlayerController.applicationMusicPlayer
-    @State private var currentSong = MusicItem(title: "De Wielen van de Bus", url: URL(string: "https://music.apple.com/nl/album/de-wielen-van-de-bus/1134585515?i=1134585819&l=en"), image: "Bus", playlist: .kindjes, playCount: 0)
+    @State private var currentSong = MusicItem(songID: "1134585819", title: "De Wielen van de Bus", url: URL(string: "https://music.apple.com/nl/album/de-wielen-van-de-bus/1134585515?i=1134585819&l=en"), image: "Bus", playlist: .kindjes, playCount: 0)
     
         
     var body: some View {
@@ -42,6 +42,7 @@ struct SongView: View {
                         .aspectRatio(contentMode: .fit)
                         .shadow(color: .accentColor, radius: 20)
                     playButtonRow
+                    
                     /*
                     // taken from other nursery rhyme project
                     Text(self.musicPlayer.nowPlayingItem?.title ?? "Not Playing")
@@ -149,7 +150,8 @@ struct SongView: View {
     private func handlePlayButtonSelected() {
         if !isPlaying {
             if !isPlaybackQueueSet {
-              //  player.queue = [album]
+              //  player.queue = [albums]
+             //   player.Queue([musicItems.songID])
                 isPlaybackQueueSet = true
                 beginPlaying()
             } else {

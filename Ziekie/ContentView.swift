@@ -24,14 +24,53 @@ struct WelcomeView: View {
     
     var body: some View {
         ZStack {
-            LinearGradient(colors: [Color("Background1"), Color("Background2")], startPoint: .topLeading, endPoint: .bottomTrailing)
-                .ignoresSafeArea()
-            ziekie
+            Background
+            ZStack {
+                TabView {
+                    Accepteer
+                    KiesLiedje
+                }
+                .tabViewStyle(PageTabViewStyle())
+            }
         }
     }
     
+    var Background: some View {
+        LinearGradient(colors: [Color("Background1"), Color("Background2")], startPoint: .topLeading, endPoint: .bottomTrailing)
+            .ignoresSafeArea()
+    }
     
-    var ziekie: some View {
+    var KiesLiedje: some View {
+        VStack {
+            
+            Text("Ziekie Luisteren".uppercased())
+                .font(.largeTitle.width(.condensed))
+                .fontWeight(.bold)
+                .foregroundColor(Color("TextColor"))
+            Image("Maneschijn")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .shadow(radius: 30)
+            Text("Laat je kind zelf kiezen welk liedje ze willen horen door op de beschrijvende afbeeldingen te tikken")
+                .foregroundColor(.accentColor)
+                .font(.title3.weight(.medium))
+                .multilineTextAlignment(.center)
+                .padding([.leading, .trailing], 32)
+                .padding(.bottom, 16)
+        }
+        .padding(30)
+        .background(.ultraThinMaterial)
+        .cornerRadius(10)
+        .overlay(RoundedRectangle(cornerRadius: 10).stroke()
+            .foregroundStyle(.linearGradient(colors:[.accentColor.opacity(0.5), .clear, .accentColor.opacity(0.5), .clear], startPoint: .topLeading, endPoint: .bottomTrailing))
+        )
+        .shadow(color: .accentColor.opacity(0.3), radius: 20, y: 20)
+        .frame(maxWidth: 500)
+        .padding(20)
+        .dynamicTypeSize(.xSmall ... .xxxLarge)
+    }
+    
+    var Accepteer: some View {
             VStack {
                 /*
                 Image(systemName: "waveform", variableValue: time)
@@ -55,15 +94,14 @@ struct WelcomeView: View {
                     .aspectRatio(contentMode: .fit)
                     .shadow(radius: 30)
                 explanatoryText
-                    .foregroundColor(.primary)
+                    .foregroundColor(.accentColor)
                     .font(.title3.weight(.medium))
                     .multilineTextAlignment(.center)
-                    .shadow(radius: 1)
                     .padding([.leading, .trailing], 32)
                     .padding(.bottom, 16)
                 if let secondaryExplanatoryText = self.secondaryExplanatoryText {
                     secondaryExplanatoryText
-                        .foregroundColor(.primary)
+                        .foregroundColor(.accentColor)
                         .font(.title3.weight(.medium))
                         .multilineTextAlignment(.center)
                         .shadow(radius: 1)
@@ -93,8 +131,9 @@ struct WelcomeView: View {
         )
         .shadow(color: .accentColor.opacity(0.3), radius: 20, y: 20)
         .frame(maxWidth: 500)
-        .padding(10)
+        .padding(20)
         .dynamicTypeSize(.xSmall ... .xxxLarge)
+        
     }
     private var explanatoryText: Text {
         let explanatoryText: Text
@@ -104,7 +143,7 @@ struct WelcomeView: View {
                     + Text(Image(systemName: "applelogo")) + Text(" Music is restricted.")
             default:
                 explanatoryText = Text("Ziekie Luisteren maakt gebruik van ")
-                    + Text(Image(systemName: "applelogo")) + Text(" Music\n zodat het niet met jouw algoritme in de war raakt")
+                    + Text(Image(systemName: "applelogo")) + Text(" Music zodat het niet met jouw Spotify algoritme in de war raakt.")
         }
         return explanatoryText
     }
@@ -129,7 +168,7 @@ struct WelcomeView: View {
         let buttonText: Text
         switch musicAuthorizationStatus {
             case .notDetermined:
-                buttonText = Text("Ga verder")
+                buttonText = Text("Accepteer")
             case .denied:
                 buttonText = Text("Open Instellingen")
             default:

@@ -9,6 +9,7 @@ import Foundation
 
 struct MusicItem: Identifiable, Hashable {
     var id = UUID()
+    var songID: String
   //  var duration: TimeInterval?
     var title: String
     var url: URL?
@@ -20,12 +21,13 @@ struct MusicItem: Identifiable, Hashable {
 }
 
 
+//When this works also try with NL language code
 var musicItems =
 [
-    MusicItem(title: "De Wielen van de Bus", url: URL(string: "https://music.apple.com/nl/album/de-wielen-van-de-bus/1134585515?i=1134585819&l=en"), image: "Bus", playlist: .kindjes, playCount: 0),
-    MusicItem(title: "In de maneschijn", url: URL(string: "https://music.apple.com/nl/album/in-de-maneschijn/1313809266?i=1313810537&l=en"), image: "Maneschijn", playlist: .kindjes, playCount: 0),
-    MusicItem(title: "Dikkertje Dap", url: URL(string: "https://music.apple.com/nl/album/dikkertje-dap-titelsong/1444323550?i=1444323823&l=en"), image: "DikkertjeDap", playlist: .kindjes, playCount: 0),
-    MusicItem(title: "Helicopter", url: URL(string: "https://music.apple.com/nl/album/helicopter/1512219762?i=1512219916&l=en"), image: "Helicopter", playlist: .kindjes, playCount: 0)
+    MusicItem(songID: "1134585819", title: "De Wielen van de Bus", url: URL(string: "https://music.apple.com/nl/album/de-wielen-van-de-bus/1134585515?i=1134585819&l=en"), image: "Bus", playlist: .kindjes, playCount: 0),
+    MusicItem(songID: "1313810537", title: "In de maneschijn", url: URL(string: "https://music.apple.com/nl/album/in-de-maneschijn/1313809266?i=1313810537&l=en"), image: "Maneschijn", playlist: .kindjes, playCount: 0),
+    MusicItem(songID: "1444323823", title: "Dikkertje Dap", url: URL(string: "https://music.apple.com/nl/album/dikkertje-dap-titelsong/1444323550?i=1444323823&l=en"), image: "DikkertjeDap", playlist: .kindjes, playCount: 0),
+    MusicItem(songID: "1512219916", title: "Helicopter", url: URL(string: "https://music.apple.com/nl/album/helicopter/1512219762?i=1512219916&l=en"), image: "Helicopter", playlist: .kindjes, playCount: 0)
 ]
 
 
