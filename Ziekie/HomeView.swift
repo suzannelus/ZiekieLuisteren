@@ -8,28 +8,92 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var showingPlaylistCreation = false
+    @StateObject private var container = PlaylistsContainer.shared
+    
     var body: some View {
-        ZStack {
-            
-            NavigationStack {
-                VStack {
-                    List(musicItems) { item in
-                        NavigationLink(value: item) {
-                            SongRow(musicItems: item)
+        NavigationStack {
+            Color(uiColor: .systemBackground)
+                .ignoresSafeArea()
+                .overlay {
+                    if container.playlists.isEmpty {
+                        EmptyPlaylistView(showCreation: $showingPlaylistCreation)
+                    } else {
+                        List {
+                            ForEach(container.playlists) { playlist in
+                                NavigationLink(value: playlist) {
+                                    PlaylistRowView(playlist: playlist)
+                                }
+                                .listRowBackground(Color.clear)
+                            }
                         }
-                        .navigationTitle("Kies een liedje")
-                        .navigationBarTitleDisplayMode(.automatic)
-                        .navigationDestination(for: MusicItem.self) { item in
-                            SongView(musicItems: item)
-                        }
-                        .listRowBackground(Color.accentColor.opacity(0.0))
+                        .listStyle(.plain)
                     }
-                    .scrollContentBackground(.hidden)
-                    .background(LinearGradient(colors: [Color("Background1"), Color("Background2")], startPoint: .topLeading, endPoint: .bottomTrailing)
-                        .ignoresSafeArea())
+                }
+                .navigationTitle("Playlists")
+                .toolbar {
+                    ToolbarItem(placement: .topBarTrailing) {
+                        Button(action: { showingPlaylistCreation = true }) {
+                            Image(systemName: "plus")
+                        }
+                    }
+                }
+                .navigationDestination(for: Playlist.self) { playlist in
+                    Text(playlist.name)
+                }
+                .sheet(isPresented: $showingPlaylistCreation) {
+                    PlaylistCreationSheet()
+                }
+        }
+    }
+}
+
+struct EmptyPlaylistView: View {
+    @Binding var showCreation: Bool
+    
+    var body: some View {
+        VStack(spacing: 20) {
+            Text("No playlists yet")
+                .font(.title)
+                .foregroundColor(.secondary)
+            
+            Button(action: { showCreation = true }) {
+                Label("Create Playlist", systemImage: "plus")
+                    .font(.headline)
+            }
+            .buttonStyle(.borderedProminent)
+        }
+    }
+}
+
+struct PlaylistRowView: View {
+    let playlist: Playlist
+    
+    var body: some View {
+        HStack {
+            Group {
+                if let image = playlist.customImage {
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 50, height: 50)
+                } else {
+                    Image(systemName: "music.note.list")
+                        .font(.title)
+                        .frame(width: 50, height: 50)
                 }
             }
+            .cornerRadius(8)
+            
+            VStack(alignment: .leading) {
+                Text(playlist.name)
+                    .font(.headline)
+                Text("\(playlist.songs.count) songs")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+            }
         }
+        .padding(.vertical, 4)
     }
 }
 

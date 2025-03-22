@@ -21,6 +21,10 @@
 		3F6DFFE2299A92FC007C1652 /* ZiekieUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6DFFE1299A92FC007C1652 /* ZiekieUITestsLaunchTests.swift */; };
 		3F6DFFEF299A930E007C1652 /* SearchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6DFFEE299A930E007C1652 /* SearchView.swift */; };
 		3FFA8EDD299D398E0090EDE2 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3FFA8EDC299D398E0090EDE2 /* HomeView.swift */; };
+		505E45782D4F9E4C00243170 /* SongImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505E45772D4F9E4C00243170 /* SongImages.swift */; };
+		505E457A2D50100300243170 /* Playlists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505E45792D50100300243170 /* Playlists.swift */; };
+		505E457C2D5161FA00243170 /* ParentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505E457B2D5161FA00243170 /* ParentView.swift */; };
+		5090C5FE2D8F4CC400ED8941 /* PlaylistCreationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5090C5FD2D8F4CC400ED8941 /* PlaylistCreationSheet.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +62,12 @@
 		3F6DFFEE299A930E007C1652 /* SearchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchView.swift; sourceTree = "<group>"; };
 		3F6DFFF0299A93A7007C1652 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		3FFA8EDC299D398E0090EDE2 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		505E45772D4F9E4C00243170 /* SongImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SongImages.swift; sourceTree = "<group>"; };
+		505E45792D50100300243170 /* Playlists.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playlists.swift; sourceTree = "<group>"; };
+		505E457B2D5161FA00243170 /* ParentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ParentView.swift; sourceTree = "<group>"; };
+		505E53E02D8610CE00F15E2D /* Contents.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Contents.json; sourceTree = "<group>"; };
+		5090C5FD2D8F4CC400ED8941 /* PlaylistCreationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistCreationSheet.swift; sourceTree = "<group>"; };
+		5090C5FF2D8F52EA00ED8941 /* MusicAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicAuthManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,7 +121,11 @@
 			children = (
 				3F6DFFF0299A93A7007C1652 /* Info.plist */,
 				3F6D005A299CEA56007C1652 /* ContentView.swift */,
+				505E457B2D5161FA00243170 /* ParentView.swift */,
 				3FFA8EDC299D398E0090EDE2 /* HomeView.swift */,
+				5090C5FD2D8F4CC400ED8941 /* PlaylistCreationSheet.swift */,
+				505E45792D50100300243170 /* Playlists.swift */,
+				505E45772D4F9E4C00243170 /* SongImages.swift */,
 				3F1F94D9299FC2AE00077B2B /* SongRow.swift */,
 				3F6D0074299D2535007C1652 /* SongView.swift */,
 				3F4442A329A4D374007A6CB2 /* Roadmap.swift */,
@@ -119,7 +133,9 @@
 				3F6D0029299BB6FF007C1652 /* Data.swift */,
 				3F6DFFEE299A930E007C1652 /* SearchView.swift */,
 				3F6DFFC8299A92FC007C1652 /* Assets.xcassets */,
+				505E53E02D8610CE00F15E2D /* Contents.json */,
 				3F6DFFCA299A92FC007C1652 /* Preview Content */,
+				5090C5FF2D8F52EA00ED8941 /* MusicAuthManager.swift */,
 			);
 			path = Ziekie;
 			sourceTree = "<group>";
@@ -285,12 +301,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				505E45782D4F9E4C00243170 /* SongImages.swift in Sources */,
 				3F6D002A299BB6FF007C1652 /* Data.swift in Sources */,
 				3F1F94DA299FC2AE00077B2B /* SongRow.swift in Sources */,
 				3F6DFFEF299A930E007C1652 /* SearchView.swift in Sources */,
 				3F6D0075299D2535007C1652 /* SongView.swift in Sources */,
+				505E457A2D50100300243170 /* Playlists.swift in Sources */,
+				5090C5FE2D8F4CC400ED8941 /* PlaylistCreationSheet.swift in Sources */,
 				3F4442A429A4D374007A6CB2 /* Roadmap.swift in Sources */,
 				3FFA8EDD299D398E0090EDE2 /* HomeView.swift in Sources */,
+				505E457C2D5161FA00243170 /* ParentView.swift in Sources */,
 				3F6DFFC5299A92FA007C1652 /* ZiekieApp.swift in Sources */,
 				3F6D005B299CEA56007C1652 /* ContentView.swift in Sources */,
 			);
@@ -462,6 +482,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -494,6 +515,7 @@
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.2;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

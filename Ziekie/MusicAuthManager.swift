@@ -1,16 +1,20 @@
 import SwiftUI
 import MusicKit
-import StoreKit
 
 public class MusicAuthManager: ObservableObject {
-    public static let shared = MusicAuthManager()
+    static let shared = MusicAuthManager()
     
-    @Published public var musicSubscription: MusicSubscription?
-    @Published public var isAuthorized = false
-    @Published public var isShowingSubscriptionOffer = false
-    @Published public var subscriptionOfferOptions: MusicSubscriptionOffer.Options = .default
+    @Published var musicSubscription: MusicSubscription?
+    @Published var isAuthorized = false
+    @Published var isShowingSubscriptionOffer = false
+    @Published var subscriptionOfferOptions: MusicSubscriptionOffer.Options = .default
+    @Published var isWelcomeViewPresented: Bool = true
     
     private init() {
+        let authorizationStatus = MusicAuthorization.currentStatus
+        isAuthorized = authorizationStatus == .authorized
+        isWelcomeViewPresented = !isAuthorized
+        
         Task {
             await checkAuthorizationStatus()
             await startSubscriptionUpdates()
@@ -18,9 +22,10 @@ public class MusicAuthManager: ObservableObject {
     }
     
     @MainActor
-    public func checkAuthorizationStatus() async {
+    func checkAuthorizationStatus() async {
         let status = await MusicAuthorization.request()
         isAuthorized = status == .authorized
+        isWelcomeViewPresented = !isAuthorized
     }
     
     private func startSubscriptionUpdates() async {
@@ -31,26 +36,30 @@ public class MusicAuthManager: ObservableObject {
         }
     }
     
-    public var canPlayMusic: Bool {
+    var canPlayMusic: Bool {
         isAuthorized && (musicSubscription?.canPlayCatalogContent ?? false)
     }
     
-    public var shouldOfferSubscription: Bool {
+    var shouldOfferSubscription: Bool {
         isAuthorized && (musicSubscription?.canBecomeSubscriber ?? false)
     }
     
-    func showSubscriptionOffer(messageId: MusicSubscriptionOffer.MessageIdentifier = .playMusic) {
-            subscriptionOfferOptions.messageIdentifier = messageId
-            isShowingSubscriptionOffer = true
-        }
+    func showSubscriptionOffer() {
+        subscriptionOfferOptions.messageIdentifier = .playMusic
+        isShowingSubscriptionOffer = true
+    }
 }
 
-// ViewModifier to handle subscription checks
-public struct MusicAuthHandling: ViewModifier {
+// ViewModifier to handle subscription checks and welcome view
+struct MusicAuthHandling: ViewModifier {
     @StateObject private var authManager = MusicAuthManager.shared
     
-    public func body(content: Content) -> some View {
+    func body(content: Content) -> some View {
         content
+            .sheet(isPresented: $authManager.isWelcomeViewPresented) {
+                WelcomeView()
+                    .interactiveDismissDisabled()
+            }
             .musicSubscriptionOffer(
                 isPresented: $authManager.isShowingSubscriptionOffer,
                 options: authManager.subscriptionOfferOptions
@@ -58,7 +67,7 @@ public struct MusicAuthHandling: ViewModifier {
     }
 }
 
-public extension View {
+extension View {
     func handleMusicAuth() -> some View {
         self.modifier(MusicAuthHandling())
     }

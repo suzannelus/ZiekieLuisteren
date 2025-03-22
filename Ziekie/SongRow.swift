@@ -8,40 +8,42 @@
 import SwiftUI
 
 struct SongRow: View {
-    @State private var playCount = 0
-    
-    var musicItems: MusicItem
-    
+    let musicItems: MusicItem
     
     var body: some View {
-        ZStack {
-            HStack {
-                Image(musicItems.image ?? "")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .shadow(color: .accentColor, radius: 20)
-                VStack(alignment: .leading) {
-                    Text(musicItems.title)
-                        .font(.largeTitle.width(.condensed))
-                    Spacer()
-                    Text("\(self.playCount)")
-                    Button("Play") {
-                        self.playCount += 1
-                    }
+        HStack(spacing: 12) {
+            Group {
+                if let customImage = musicItems.customImage {
+                    customImage
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 60, height: 60)
+                } else {
+                    Image(musicItems.image ?? "")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 60, height: 60)
                 }
-                
             }
-          //  .padding()
+            .cornerRadius(8)
+            
+            Text(musicItems.title)
+                .font(.headline)
+                .lineLimit(1)
         }
+        .padding(.vertical, 4)
     }
 }
 
-struct SongRow_Previews: PreviewProvider {
-    static var previews: some View {
-        List {
-            SongRow(musicItems: musicItems[0])
-            SongRow(musicItems: musicItems[1])
-            SongRow(musicItems: musicItems[2])
-        }
+#Preview {
+    List {
+        SongRow(musicItems: MusicItem(
+            songID: "preview",
+            title: "Preview Song",
+            url: nil,
+            image: "preview",
+            playCount: 0,
+            imageGenerationConcepts: nil
+        ))
     }
 }

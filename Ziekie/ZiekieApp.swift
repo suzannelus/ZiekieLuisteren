@@ -5,17 +5,24 @@
 //  Created by Suzanne Lustenhouwer on 13/02/2023.
 //
 
+// Existing code ...
+// Import MusicAuthManager
+@_exported import MusicKit
+
+// Your other imports remain the same
 import SwiftUI
-import MusicKit
 
 @main
 struct ZiekieApp: App {
+    @StateObject private var authManager = MusicAuthManager.shared
     
     var body: some Scene {
         WindowGroup {
             HomeView()
-           // SongView(isPreparedToPlay: true)
-          //  WelcomeView(musicAuthorizationStatus: .constant(.notDetermined))
+                .handleMusicAuth()
         }
     }
 }
+
+// End of file 
+// Existing code ...
