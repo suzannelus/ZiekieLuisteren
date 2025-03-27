@@ -36,7 +36,7 @@ struct SongRow: View {
 }
 
 #Preview {
-    List {
+    Grid {
         SongRow(musicItems: MusicItem(
             songID: "preview",
             title: "Preview Song",

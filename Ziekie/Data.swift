@@ -90,7 +90,7 @@ class PlaylistsContainer: ObservableObject {
         for data in defaultPlaylistData {
             let playlist = Playlist(
                 name: data.name,
-                customImage: Image(systemName: "music.note"),
+                customImage: Image("WheelsOnTheBus"),
                 imageGenerationConcept: data.concept,
                 songs: []
             )

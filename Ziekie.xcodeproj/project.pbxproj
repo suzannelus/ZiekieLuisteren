@@ -25,6 +25,7 @@
 		505E457A2D50100300243170 /* Playlists.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505E45792D50100300243170 /* Playlists.swift */; };
 		505E457C2D5161FA00243170 /* ParentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 505E457B2D5161FA00243170 /* ParentView.swift */; };
 		5090C5FE2D8F4CC400ED8941 /* PlaylistCreationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5090C5FD2D8F4CC400ED8941 /* PlaylistCreationSheet.swift */; };
+		50A908F72D95795A00545344 /* PlaylistGridView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 50A908F62D95795A00545344 /* PlaylistGridView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +69,7 @@
 		505E53E02D8610CE00F15E2D /* Contents.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Contents.json; sourceTree = "<group>"; };
 		5090C5FD2D8F4CC400ED8941 /* PlaylistCreationSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistCreationSheet.swift; sourceTree = "<group>"; };
 		5090C5FF2D8F52EA00ED8941 /* MusicAuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MusicAuthManager.swift; sourceTree = "<group>"; };
+		50A908F62D95795A00545344 /* PlaylistGridView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistGridView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -123,6 +125,7 @@
 				3F6D005A299CEA56007C1652 /* ContentView.swift */,
 				505E457B2D5161FA00243170 /* ParentView.swift */,
 				3FFA8EDC299D398E0090EDE2 /* HomeView.swift */,
+				50A908F62D95795A00545344 /* PlaylistGridView.swift */,
 				5090C5FD2D8F4CC400ED8941 /* PlaylistCreationSheet.swift */,
 				505E45792D50100300243170 /* Playlists.swift */,
 				505E45772D4F9E4C00243170 /* SongImages.swift */,
@@ -308,6 +311,7 @@
 				3F6D0075299D2535007C1652 /* SongView.swift in Sources */,
 				505E457A2D50100300243170 /* Playlists.swift in Sources */,
 				5090C5FE2D8F4CC400ED8941 /* PlaylistCreationSheet.swift in Sources */,
+				50A908F72D95795A00545344 /* PlaylistGridView.swift in Sources */,
 				3F4442A429A4D374007A6CB2 /* Roadmap.swift in Sources */,
 				3FFA8EDD299D398E0090EDE2 /* HomeView.swift in Sources */,
 				505E457C2D5161FA00243170 /* ParentView.swift in Sources */,

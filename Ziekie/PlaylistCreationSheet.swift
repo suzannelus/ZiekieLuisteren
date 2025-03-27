@@ -27,7 +27,7 @@ class PlaylistCreationViewModel: ObservableObject {
             self?.isShowingImagePlayground = true
         }
     }
-    
+
     func createPlaylist() -> Bool {
         guard !playlistName.isEmpty else { return false }
         guard let image = playlistImage else { return false }

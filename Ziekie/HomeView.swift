@@ -11,6 +11,10 @@ struct HomeView: View {
     @State private var showingPlaylistCreation = false
     @StateObject private var container = PlaylistsContainer.shared
     
+    private static let initialColumns = 2
+    
+    @State private var gridColumns = Array(repeating: GridItem(.flexible()), count: initialColumns)
+    
     var body: some View {
         NavigationStack {
             Color(uiColor: .systemBackground)
@@ -19,15 +23,20 @@ struct HomeView: View {
                     if container.playlists.isEmpty {
                         EmptyPlaylistView(showCreation: $showingPlaylistCreation)
                     } else {
-                        List {
-                            ForEach(container.playlists) { playlist in
-                                NavigationLink(value: playlist) {
-                                    PlaylistRowView(playlist: playlist)
+                        ScrollView {
+                            LazyVGrid(columns: gridColumns) {
+                                ForEach(container.playlists) { playlist in
+                                    NavigationLink(value: playlist) {
+                                        PlaylistGridView(playlist: playlist)
+                                    }
+                                    .listRowBackground(Color.clear)
+                                    .listRowBackground(Color.blue)
+                                    //   .background(in: Shape(Circle()).fill(Color.blue))
+                                    
                                 }
-                                .listRowBackground(Color.clear)
                             }
                         }
-                        .listStyle(.plain)
+                        .padding()
                     }
                 }
                 .navigationTitle("Playlists")
@@ -66,36 +75,7 @@ struct EmptyPlaylistView: View {
     }
 }
 
-struct PlaylistRowView: View {
-    let playlist: Playlist
-    
-    var body: some View {
-        HStack {
-            Group {
-                if let image = playlist.customImage {
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 50, height: 50)
-                } else {
-                    Image(systemName: "music.note.list")
-                        .font(.title)
-                        .frame(width: 50, height: 50)
-                }
-            }
-            .cornerRadius(8)
-            
-            VStack(alignment: .leading) {
-                Text(playlist.name)
-                    .font(.headline)
-                Text("\(playlist.songs.count) songs")
-                    .font(.subheadline)
-                    .foregroundColor(.secondary)
-            }
-        }
-        .padding(.vertical, 4)
-    }
-}
+
 
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {

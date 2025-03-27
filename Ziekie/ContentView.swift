@@ -122,7 +122,6 @@ struct WelcomeView: View {
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .shadow(radius: 30)
-            explanatoryText
             if let secondaryText = secondaryExplanatoryText {
                 secondaryText
             }
@@ -155,11 +154,7 @@ struct WelcomeView: View {
         .dynamicTypeSize(.xSmall ... .xxxLarge)
     }
     
-    private var explanatoryText: some View {
-        Text("Ziekie Luisteren maakt gebruik van ")
-            + Text(Image(systemName: "applelogo"))
-            + Text("\u{a0}Music zodat het niet met jouw Spotify algoritme in de war raakt.")
-    }
+   
     
     private var secondaryExplanatoryText: Text? {
         if !authManager.isAuthorized {
