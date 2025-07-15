@@ -1,0 +1,19 @@
+{
+  "regionCode": "US",
+  "languageCode": "en",
+  "playlists": [
+    {
+      "name": "lullabies",
+      "localizedName": "Lullabies",
+      "imageGenerationConcept": "A peaceful starry night with a sleeping moon and stars",
+      "songs": [
+        {
+          "appleMusicID": "1134585819",
+          "title": "Twinkle Twinkle Little Star",
+          "artist": "Various Artists",
+          "imageGenerationConcept": "Shining stars in a peaceful night sky"
+        }
+      ]
+    }
+  ]
+}

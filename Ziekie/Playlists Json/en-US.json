@@ -1,0 +1,132 @@
+{
+  "regionCode": "US",
+  "languageCode": "en",
+  "playlists": [
+    {
+      "name": "nursery_rhymes",
+      "localizedName": "Nursery Rhymes",
+      "imageGenerationConcept": "A cheerful nursery with colorful alphabet blocks, nursery rhyme books, and happy children singing together",
+      "songs": [
+        {
+          "appleMusicID": "1537565862",
+          "title": "Row, Row, Row Your Boat",
+          "artist": "Super Simple Songs",
+          "savedImageName": "Row, Row, Row Your Boat",
+          "imageGenerationConcept": "Children rowing a colorful wooden boat on a peaceful lake with ducks, lily pads, and gentle ripples in the water"
+        },
+        {
+          "appleMusicID": "513899806",
+          "title": "Old MacDonald",
+          "artist": "Kidzone",
+          "savedImageName": "Old MacDonald",
+          "imageGenerationConcept": "A cheerful red barn with friendly farm animals including cows, pigs, chickens, and sheep in a sunny green meadow"
+        },
+        {
+          "appleMusicID": "513899866",
+          "title": "Over in the Meadow",
+          "artist": "Kidzone",
+          "savedImageName": "Over in the Meadow",
+          "imageGenerationConcept": "A beautiful meadow with various baby animals like bunnies, birds, and butterflies among wildflowers and tall grass"
+        },
+        {
+          "appleMusicID": "1409094644",
+          "title": "If You're Happy and You Know It",
+          "artist": "Big Bird, Oscar the Grouch & The Sesame Street Kids",
+          "savedImageName": "If You're Happy and You Know It",
+          "imageGenerationConcept": "Happy children clapping their hands, stomping their feet, and showing joyful expressions in a bright playground setting"
+        },
+        {
+          "appleMusicID": "1773439576",
+          "title": "Wheels on the Bus",
+          "artist": "Gracie's Corner",
+          "savedImageName": "Wheels on the Bus",
+          "imageGenerationConcept": "A bright yellow school bus with big round wheels driving through a friendly neighborhood with trees and houses"
+        },
+        {
+          "appleMusicID": "968801611",
+          "title": "Head, Shoulders, Knees and Toes",
+          "artist": "Mr. Jon & Friends",
+          "savedImageName": "Head, Shoulders, Knees and Toes",
+          "imageGenerationConcept": "Children pointing to different body parts with clear labels and arrows showing head, shoulders, knees, and toes"
+        },
+        {
+          "appleMusicID": "1467934636",
+          "title": "Five Little Monkeys",
+          "artist": "Wheels on the Bus",
+          "savedImageName": "Five Little Monkeys",
+          "imageGenerationConcept": "Five playful monkeys jumping on a cozy bed with pillows and blankets, with one monkey falling off and bumping its head"
+        },
+        {
+          "appleMusicID": "1663809052",
+          "title": "Itsy Bitsy Spider",
+          "artist": "Toddler Tunes",
+          "savedImageName": "Itsy Bitsy Spider",
+          "imageGenerationConcept": "A tiny friendly spider climbing up a water spout with raindrops falling and then sunshine drying everything up"
+        },
+        {
+          "appleMusicID": "1438663830",
+          "title": "Mary Had a Little Lamb",
+          "artist": "Paul McCartney & Wings",
+          "savedImageName": "Mary Had a Little Lamb",
+          "imageGenerationConcept": "A young girl in a simple dress walking with a fluffy white lamb following behind her to a small schoolhouse"
+        },
+        {
+          "appleMusicID": "1537827833",
+          "title": "ABC Song",
+          "artist": "Ageeth de haan",
+          "savedImageName": "ABC Song",
+          "imageGenerationConcept": "Colorful alphabet letters floating in the air with bright primary colors and a smiling sun in the background"
+        }
+      ]
+    },
+    {
+      "name": "timothys_favourites",
+      "localizedName": "Timothy's Favourites",
+      "imageGenerationConcept": "A cozy reading corner with favorite books, soft cushions, and musical instruments for a special collection of beloved songs",
+      "songs": [
+        {
+          "appleMusicID": "1537565862",
+          "title": "Row, Row, Row Your Boat",
+          "artist": "Super Simple Songs",
+          "savedImageName": "Row, Row, Row Your Boat",
+          "imageGenerationConcept": "Children rowing a colorful wooden boat on a peaceful lake with ducks, lily pads, and gentle ripples in the water"
+        },
+        {
+          "appleMusicID": "1707252567",
+          "title": "Little Blue",
+          "artist": "Jacob Collier",
+          "savedImageName": "Little Blue",
+          "imageGenerationConcept": "A gentle blue bird sitting on a branch with soft blue clouds and peaceful sky in various shades of blue"
+        },
+        {
+          "appleMusicID": "1440618183",
+          "title": "Do You Want to Build a Snowman",
+          "artist": "Kristen Bell, Agatha Lee Monn & Katie Lopez",
+          "savedImageName": "Do You Want to Build a Snowman",
+          "imageGenerationConcept": "Children building a friendly snowman with carrot nose, button eyes, and stick arms in a snowy yard with snowflakes falling"
+        },
+        {
+          "appleMusicID": "1802699332",
+          "title": "Heigh-Ho",
+          "artist": "Jeremy Swift, George Salazar, Jason Kravits, Tituss Burgess, Martin Klebba & Andy Grotelueschen",
+          "savedImageName": "Heigh-Ho",
+          "imageGenerationConcept": "Happy workers marching with tools and pickaxes, whistling and singing while walking through a mountain path"
+        },
+        {
+          "appleMusicID": "1472083275",
+          "title": "Circle of Life",
+          "artist": "Lindiwe Mkhize & Lebo M",
+          "savedImageName": "Circle of Life",
+          "imageGenerationConcept": "African savanna with various animals like elephants, giraffes, and zebras gathered around a watering hole under a bright sun"
+        },
+        {
+          "appleMusicID": "1436768987",
+          "title": "Timothy",
+          "artist": "Little dragon",
+          "savedImageName": "Timothy",
+          "imageGenerationConcept": "A small friendly dragon with colorful scales playing happily in a magical forest with flowers and butterflies"
+        }
+      ]
+    }
+  ]
+}

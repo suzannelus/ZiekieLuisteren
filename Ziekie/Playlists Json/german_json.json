@@ -1,0 +1,112 @@
+{
+  "regionCode": "DE",
+  "languageCode": "de", 
+  "playlists": [
+    {
+      "name": "schlaflieder",
+      "localizedName": "Schlaflieder",
+      "imageGenerationConcept": "Ein gemütliches deutsches Kinderzimmer mit Mondschein und schlafenden Teddybären",
+      "songs": [
+        {
+          "appleMusicID": "3134598760",
+          "title": "Guten Abend, Gute Nacht",
+          "artist": "Johannes Brahms",
+          "imageGenerationConcept": "Ein friedliches deutsches Dorf bei Mondschein mit Fachwerkhäusern und sanften Hügeln"
+        },
+        {
+          "appleMusicID": "3245609871", 
+          "title": "Schlaf, Kindlein, Schlaf",
+          "artist": "Traditionell",
+          "imageGenerationConcept": "Schafe auf einer grünen deutschen Wiese mit einem Schäfer unter Sternen"
+        },
+        {
+          "appleMusicID": "3356710982",
+          "title": "Der Mond ist Aufgegangen",
+          "artist": "Traditionell",
+          "imageGenerationConcept": "Ein vollmond über dem Schwarzwald mit glitzernden Sternen und nebligen Tannen"
+        },
+        {
+          "appleMusicID": "3467821093",
+          "title": "Weißt Du Wieviel Sternlein Stehen",
+          "artist": "Traditionell",
+          "imageGenerationConcept": "Unzählige funkelnde Sterne am Himmel über einem deutschen Märchenschloss"
+        }
+      ]
+    },
+    {
+      "name": "bewegungslieder",
+      "localizedName": "Bewegungslieder",
+      "imageGenerationConcept": "Kinder tanzen in einem deutschen Park mit Bretzel-Stand und bunten Luftballons",
+      "songs": [
+        {
+          "appleMusicID": "3578932104",
+          "title": "Backe, Backe Kuchen",
+          "artist": "Traditionell",
+          "imageGenerationConcept": "Eine deutsche Bäckerei mit dampfendem Kuchen und fröhlichen Kindern beim Backen"
+        },
+        {
+          "appleMusicID": "3689043215",
+          "title": "Häschen in der Grube",
+          "artist": "Traditionell",
+          "imageGenerationConcept": "Ein niedliches Häschen in einem grünen deutschen Wald mit Pilzen und Blumen"
+        },
+        {
+          "appleMusicID": "3790154326",
+          "title": "Ringel, Ringel, Reihe",
+          "artist": "Traditionell",
+          "imageGenerationConcept": "Kinder im Kreis tanzend auf einer Wiese mit Alpenpanorama im Hintergrund"
+        }
+      ]
+    },
+    {
+      "name": "lernlieder",
+      "localizedName": "Lernlieder",
+      "imageGenerationConcept": "Ein deutsches Klassenzimmer mit Tafel, Globus und eifrig lernenden Kindern",
+      "songs": [
+        {
+          "appleMusicID": "3801265437",
+          "title": "ABC, Die Katze Lief im Schnee",
+          "artist": "Traditionell",
+          "imageGenerationConcept": "Bunte deutsche Buchstaben im Schnee mit einer verspielten Katze und Schneeflocken"
+        },
+        {
+          "appleMusicID": "3912376548",
+          "title": "Alle Meine Entchen",
+          "artist": "Traditionell",
+          "imageGenerationConcept": "Gelbe Entchen schwimmen im Teich eines deutschen Stadtparks mit Fontäne"
+        },
+        {
+          "appleMusicID": "4023487659",
+          "title": "Ein Männlein Steht im Walde",
+          "artist": "Traditionell",
+          "imageGenerationConcept": "Ein Fliegenpilz im deutschen Märchenwald mit Sonnenstrahlen und Waldtieren"
+        }
+      ]
+    },
+    {
+      "name": "weihnachtslieder",
+      "localizedName": "Weihnachtslieder",
+      "imageGenerationConcept": "Ein deutscher Weihnachtsmarkt mit Glühwein, Lebkuchen und singenden Kindern",
+      "songs": [
+        {
+          "appleMusicID": "4134598760",
+          "title": "O Tannenbaum",
+          "artist": "Traditionell",
+          "imageGenerationConcept": "Ein prächtiger Weihnachtsbaum auf einem deutschen Marktplatz mit Fachwerkhäusern"
+        },
+        {
+          "appleMusicID": "4245609871",
+          "title": "Ihr Kinderlein Kommet",
+          "artist": "Traditionell",
+          "imageGenerationConcept": "Kinder ziehen zur Krippe in einer deutschen Kirche mit warmen Kerzenlicht"
+        },
+        {
+          "appleMusicID": "4356710982",
+          "title": "Stille Nacht, Heilige Nacht",
+          "artist": "Franz Gruber",
+          "imageGenerationConcept": "Eine verschneite deutsche Dorfkirche bei Nacht mit leuchtenden Fenstern"
+        }
+      ]
+    }
+  ]
+}

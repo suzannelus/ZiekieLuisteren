@@ -1,0 +1,106 @@
+{
+  "regionCode": "ES",
+  "languageCode": "es", 
+  "playlists": [
+    {
+      "name": "canciones_de_cuna",
+      "localizedName": "Canciones de Cuna",
+      "imageGenerationConcept": "Un dormitorio español tradicional con luna suave y ositos durmiendo",
+      "songs": [
+        {
+          "appleMusicID": "2134567890",
+          "title": "Estrellita Dónde Estás",
+          "artist": "Tradicional",
+          "imageGenerationConcept": "Estrellas doradas brillantes en un cielo nocturno púrpura con luna creciente"
+        },
+        {
+          "appleMusicID": "2245678901", 
+          "title": "Duérmete Niño",
+          "artist": "Tradicional",
+          "imageGenerationConcept": "Una cuna mecedora bajo un olivo en la brisa suave del atardecer mediterráneo"
+        },
+        {
+          "appleMusicID": "2356789012",
+          "title": "Señora Santa Ana",
+          "artist": "Tradicional",
+          "imageGenerationConcept": "Un patio andaluz con azulejos y una abuela meciendo suavemente a un bebé"
+        },
+        {
+          "appleMusicID": "2467890123",
+          "title": "A la Nanita Nana",
+          "artist": "Tradicional",
+          "imageGenerationConcept": "Una noche navideña española con estrella de Belén y paisaje sereno"
+        }
+      ]
+    },
+    {
+      "name": "canciones_de_accion",
+      "localizedName": "Mover y Bailar",
+      "imageGenerationConcept": "Niños bailando flamenco en una plaza española con guitarra y castañuelas",
+      "songs": [
+        {
+          "appleMusicID": "2578901234",
+          "title": "Palmas, Palmitas",
+          "artist": "Tradicional",
+          "imageGenerationConcept": "Niños aplaudiendo alegremente con trajes tradicionales españoles"
+        },
+        {
+          "appleMusicID": "2689012345",
+          "title": "Cabeza, Hombros, Rodillas y Pies",
+          "artist": "Tradicional",
+          "imageGenerationConcept": "Niños señalando partes del cuerpo con colores de la bandera española"
+        },
+        {
+          "appleMusicID": "2790123456",
+          "title": "El Patio de Mi Casa",
+          "artist": "Tradicional",
+          "imageGenerationConcept": "Un patio español con fuente, flores y niños jugando en círculo"
+        }
+      ]
+    },
+    {
+      "name": "canciones_de_aprendizaje",
+      "localizedName": "Aprender y Crecer",
+      "imageGenerationConcept": "Una escuela española con mapas, libros y niños estudiando alegremente",
+      "songs": [
+        {
+          "appleMusicID": "2801234567",
+          "title": "Los Pollitos Dicen",
+          "artist": "Tradicional",
+          "imageGenerationConcept": "Pollitos amarillos en una granja española con gallina madre y trigales"
+        },
+        {
+          "appleMusicID": "2912345678",
+          "title": "Pin Pon",
+          "artist": "Tradicional",
+          "imageGenerationConcept": "Un muñeco de cartón lavándose la cara en un baño con azulejos españoles"
+        },
+        {
+          "appleMusicID": "3023456789",
+          "title": "Que Llueva, Que Llueva",
+          "artist": "Tradicional",
+          "imageGenerationConcept": "Niños jugando bajo la lluvia en un pueblo español con paraguas coloridos"
+        }
+      ]
+    },
+    {
+      "name": "villancicos",
+      "localizedName": "Villancicos",
+      "imageGenerationConcept": "Una Navidad española con belén, zambomba y niños cantando villancicos",
+      "songs": [
+        {
+          "appleMusicID": "3134567890",
+          "title": "Los Peces en el Río",
+          "artist": "Tradicional",
+          "imageGenerationConcept": "Peces nadando en un río con la Virgen María y el Niño Jesús reflejados"
+        },
+        {
+          "appleMusicID": "3245678901",
+          "title": "Campana Sobre Campana",
+          "artist": "Tradicional",
+          "imageGenerationConcept": "Campanario español con campanas doradas y paisaje navideño andaluz"
+        }
+      ]
+    }
+  ]
+}

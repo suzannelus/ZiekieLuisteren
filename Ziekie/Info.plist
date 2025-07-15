@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>UIAppFonts</key>
+	<array>
+		<string>Merriweather-Italic-VariableFont_opsz,wdth,wght.ttf</string>
+		<string>Merriweather-VariableFont_opsz,wdth,wght.ttf</string>
+		<string>Quicksand_Bold_Oblique.otf</string>
+		<string>Quicksand_Bold.otf</string>
+		<string>Quicksand_Book_Oblique.otf</string>
+		<string>Quicksand_Book.otf</string>
+		<string>Quicksand_Dash.otf</string>
+		<string>Quicksand_Light_Oblique.otf</string>
+		<string>Quicksand_Light.otf</string>
+	</array>
+</dict>
+</plist>
