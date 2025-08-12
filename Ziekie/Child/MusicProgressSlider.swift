@@ -1,3 +1,11 @@
+//
+//  MusicProgressSlider.swift
+//  Ziekie
+//
+//  Created by Suzanne Lustenhouwer on 29/07/2025.
+//
+
+
 import SwiftUI
 import MusicKit
 
@@ -71,84 +79,6 @@ struct MusicProgressSlider: View {
         } else {
             return playerManager.currentProgress * playerManager.currentDuration
         }
-    }
-    
-    private func formatTime(_ timeInterval: TimeInterval) -> String {
-        let totalSeconds = Int(max(0, timeInterval))
-        let minutes = totalSeconds / 60
-        let seconds = totalSeconds % 60
-        return String(format: "%d:%02d", minutes, seconds)
-    }
-}
-
-// MARK: - MusicPlayerManager Extensions for Seeking
-
-extension MusicPlayerManager {
-    
-    /// Seeks to a specific time in the current song
-    func seekTo(time: TimeInterval) async {
-        guard let player = player,
-              currentDuration > 0,
-              time >= 0,
-              time <= currentDuration else {
-            print("⚠️ Invalid seek time or no active player")
-            resumeProgressUpdates()
-            return
-        }
-        
-        do {
-            // More reliable seeking approach for MusicKit
-            let wasPlaying = isPlaying
-            
-            // Stop current playback
-            try await player.pause()
-            
-            // Set the playback time
-            player.playbackTime = time
-            
-            // Update our internal tracking
-            playStartTime = Date().addingTimeInterval(-time)
-            currentProgress = time / currentDuration
-            
-            // Resume playback if it was playing before
-            if wasPlaying {
-                try await player.play()
-                isPlaying = true
-            }
-            
-            // Resume progress tracking
-            resumeProgressUpdates()
-            
-            print("✅ Successfully seeked to \(formatTime(time))")
-            
-        } catch {
-            print("❌ Failed to seek: \(error)")
-            resumeProgressUpdates()
-        }
-    }
-    
-    /// Temporarily pauses for seeking (different from regular pause)
-    func pauseForSeeking() async {
-        guard let player = player else { return }
-        
-        do {
-            try await player.pause()
-            // Don't change isPlaying state - this is just for seeking
-        } catch {
-            print("❌ Failed to pause for seeking: \(error)")
-        }
-    }
-    
-    /// Pauses progress updates during seeking
-    func pauseProgressUpdates() {
-        progressTimer?.invalidate()
-        progressTimer = nil
-    }
-    
-    /// Resumes progress updates after seeking
-    func resumeProgressUpdates() {
-        guard isPlaying, progressTimer == nil else { return }
-        startProgressTracking()
     }
     
     private func formatTime(_ timeInterval: TimeInterval) -> String {

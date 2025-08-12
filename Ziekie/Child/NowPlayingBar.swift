@@ -10,88 +10,77 @@ struct NowPlayingBar: View {
         // Only show the bar when there's a currently playing song
         if let currentSong = playerManager.getCurrentSong() {
             VStack(spacing: 0) {
-                // Thin progress bar at the top
-                ProgressView(value: playerManager.currentProgress)
-                    .progressViewStyle(LinearProgressViewStyle(tint: .accentColor))
-                    .scaleEffect(y: 1.5)
+               
+                
                 
                 HStack(spacing: 12) {
                     // Album artwork
                     Group {
-                        if let artwork = queue.currentEntry?.artwork {
+                        if let customImage = currentSong.customImage {
+                            customImage
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 50, height: 50)
+                                .cornerRadius(6)
+                        } else if let artwork = queue.currentEntry?.artwork {
                             ArtworkImage(artwork, height: 50)
                                 .cornerRadius(6)
                         } else {
                             Image("WheelsOnTheBus") // Your default image
                                 .resizable()
-                                .aspectRatio(contentMode: .fill)
+                                .aspectRatio(contentMode: .fit)
                                 .frame(width: 50, height: 50)
                                 .cornerRadius(6)
                         }
                     }
-                    .onTapGesture {
-                        isShowingSongView = true
+                    
+                    VStack {
+                        // Song info
+                        Text(currentSong.title)
+                            .bodyLarge()
+                            .lineLimit(1)
+                        // Thin progress bar 
+                        ProgressView(value: playerManager.currentProgress)
+                            .progressViewStyle(LinearProgressViewStyle(tint: .accentColor))
+                            .animation(.smooth(duration: 0.5), value: playerManager.currentProgress)
                     }
                     
-                    // Song info
-                    VStack(alignment: .leading, spacing: 2) {
-                        Text(currentSong.title)
-                            .font(.subheadline)
-                            .fontWeight(.medium)
-                            .lineLimit(1)
-                            .foregroundColor(.primary)
-                        
-                        Text(currentSong.artist ?? "Unknown Artist")
-                            .font(.caption)
-                            .lineLimit(1)
-                            .foregroundColor(.secondary)
-                    }
-                    .onTapGesture {
-                        isShowingSongView = true
-                    }
                     
                     Spacer()
-                    
-                    // Play/pause button
-                    Button(action: {
-                        Task {
-                            await playerManager.togglePlayback()
+                    GlassEffectContainer(spacing: 20.0) {
+                        Button(action: {
+                            Task {
+                                await playerManager.togglePlayback()
+                            }
+                        }) {
+                            Image(systemName: playerManager.isPlaying ? "pause.fill" : "play.fill")
+                                .font(.title2)
+                                .foregroundColor(currentSong.colorPalette?.textColor)
+                                .glassEffect()
                         }
-                    }) {
-                        Image(systemName: playerManager.isPlaying ? "pause.fill" : "play.fill")
-                            .font(.title2)
-                            .foregroundColor(.accentColor)
-                    }
-                    .buttonStyle(PlainButtonStyle())
-                    
-                    // Next button (optional)
-                    Button(action: {
-                        Task {
-                            await playerManager.playNext()
+                        Button(action: {
+                            Task {
+                                await playerManager.playNext()
+                            }
+                        }) {
+                            Image(systemName: "forward.fill")
+                                .font(.title3)
+                                .foregroundColor(.accentColor)
+                                .glassEffect()
                         }
-                    }) {
-                        Image(systemName: "forward.fill")
-                            .font(.title3)
-                            .foregroundColor(.accentColor)
                     }
-                    .buttonStyle(PlainButtonStyle())
                 }
-                .padding(.horizontal, 16)
-                .padding(.vertical, 8)
-                .background(
-                    // Blurred background effect
-                    Rectangle()
-                        .fill(.ultraThinMaterial)
-                        .ignoresSafeArea(.container, edges: .horizontal)
-                )
+                .padding()
             }
-            .overlay(
-                // Subtle border
-                Rectangle()
-                    .stroke(Color.primary.opacity(0.1), lineWidth: 0.5)
-                    .ignoresSafeArea(.container, edges: .horizontal),
-                alignment: .top
-            )
+            .onTapGesture {
+                let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
+                impactFeedback.impactOccurred()
+                isShowingSongView = true
+            }
+            .glassEffect()
+            
+            .transition(.move(edge: .bottom).combined(with: .opacity))
+            .animation(.spring(response: 0.4, dampingFraction: 0.8), value: playerManager.currentlyPlayingSongID)
             .fullScreenCover(isPresented: $isShowingSongView) {
                 if let playlist = playerManager.currentPlaylist,
                    let currentSongID = playerManager.currentlyPlayingSongID {
@@ -102,18 +91,12 @@ struct NowPlayingBar: View {
     }
 }
 
-// MARK: - Mini Player Container
-struct ContentWithNowPlaying<Content: View>: View {
-    let content: Content
-    
-    init(@ViewBuilder content: () -> Content) {
-        self.content = content()
-    }
-    
-    var body: some View {
-        VStack(spacing: 0) {
-            content
-            NowPlayingBar()
-        }
+
+#Preview("NowPlayingBar - Playing") {
+    VStack {
+        Spacer()
+        Text("Hello world")
+        NowPlayingBar()
     }
 }
+

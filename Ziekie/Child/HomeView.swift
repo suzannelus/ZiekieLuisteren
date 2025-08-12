@@ -22,73 +22,97 @@ struct HomeView: View {
     
     var body: some View {
         NavigationStack {
-            Color.white
-                .overlay {
+            ZStack {
+                LinearGradient(colors: [.teal.opacity(0.4), .clear], startPoint: .top, endPoint: .bottom)
+                    .ignoresSafeArea(.all)
+                VStack {
                     if container.playlists.isEmpty {
-                        EmptyPlaylistView(showCreation: $showingParentView)
+                        EmptyPlaylistView()
+                        Spacer()
                     } else {
                         ScrollView {
-                                LazyVGrid(columns: gridColumns) {
-                                    ForEach(container.playlists) { playlist in
-                                        PlaylistGridView(playlist: playlist)
-                                    }
+                            LazyVGrid(columns: gridColumns) {
+                                ForEach(container.playlists) { playlist in
+                                    PlaylistGridView(playlist: playlist)
                                 }
-                                .padding()
+                            }
+                            .padding()
                         }
-                        VStack {
-                            VStack {
-                                Text("Recently played")
-                                Divider()
-                                Text("Recently added")
+                        Spacer()
+                        
+                    }
+                    }
+                .safeAreaInset(edge: .bottom) {
+                    NowPlayingBar()
+                }
+                    .toolbar {
+                        ToolbarItem(placement: .topBarTrailing) {
+                            Button(action: {
+                                if parentModeManager.isParentModeActive {
+                                    parentModeManager.exitParentMode()
+                                } else {
+                                    showingParentAuth = true
+                                }
+                            }) {
+                                Image(systemName: parentModeManager.isParentModeActive ? "lock.fill" : "info")
+                                    .foregroundColor(parentModeManager.isParentModeActive ? .orange : .primary)
                             }
                         }
                     }
-                }
-                .navigationTitle("Tune Gallery")
-                .appTitle()
-                .toolbar {
-                            ToolbarItem(placement: .topBarTrailing) {
-                                Button(action: {
-                                    if parentModeManager.isParentModeActive {
-                                        parentModeManager.exitParentMode()
-                                    } else {
-                                        showingParentAuth = true
-                                    }
-                                }) {
-                                    Image(systemName: parentModeManager.isParentModeActive ? "lock.fill" : "info")
-                                        .foregroundColor(parentModeManager.isParentModeActive ? .orange : .primary)
-                                }
-                            }
+                    .sheet(isPresented: $showingParentAuth) {
+                        ParentAuthenticationView {
+                            showingParentAuth = false
+                            parentModeManager.enterParentMode()
                         }
-                        .sheet(isPresented: $showingParentAuth) {
-                            ParentAuthenticationView {
-                                showingParentAuth = false
-                                parentModeManager.enterParentMode()
-                            }
-                        }
-                        .fullScreenCover(isPresented: $parentModeManager.isParentModeActive) {
-                            ParentPlaylistManagerView()
-                        }
-                    
+                    }
+                    .fullScreenCover(isPresented: $parentModeManager.isParentModeActive) {
+                        ParentPlaylistManagerView()
+                    }
+                
+            }
         }
-        
     }
 }
 
 struct EmptyPlaylistView: View {
-    @Binding var showCreation: Bool
-    
+    @StateObject private var parentModeManager = ParentModeManager.shared
+    @State private var showingParentView = false
+    @State private var showingParentAuth = false
+
     var body: some View {
-        VStack(spacing: 20) {
-            Text("No playlists yet")
-                .font(.title)
-                .foregroundColor(.secondary)
-            
-            Button(action: { showCreation = true }) {
-                Label("Create Playlist", systemImage: "plus")
-                    .font(.headline)
+        ZStack {
+            VStack(spacing: 20) {
+                
+                RainbowText(text: "Tune Gallery", font: .merriweatherResponsive(.largeTitle))
+                
+                Spacer()
+                Text("No playlists yet")
+                    .font(.title)
+                    .foregroundColor(.secondary)
+                
+                Button(action: {
+                    if parentModeManager.isParentModeActive {
+                        parentModeManager.exitParentMode()
+                    } else {
+                        showingParentAuth = true
+                    }
+                }) {
+                    Label("Create Playlist", systemImage: "plus")
+                        .font(.headline)
+                }
+                .padding()
+                .glassEffect(.regular.tint(.pink).interactive())
+                Spacer()
             }
-            .buttonStyle(.borderedProminent)
+        }
+        .sheet(isPresented: $showingParentAuth) {
+            ParentAuthenticationView {
+                showingParentAuth = false
+                parentModeManager.enterParentMode()
+            }
+        }
+        .fullScreenCover(isPresented: $parentModeManager.isParentModeActive) {
+            ParentPlaylistManagerView()
         }
     }
 }
@@ -98,5 +122,11 @@ struct EmptyPlaylistView: View {
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         HomeView()
+                        .environment(\.locale, Locale(identifier: "en-US"))
+                        .previewDisplayName("English US")
+                    
+                    HomeView()
+                        .environment(\.locale, Locale(identifier: "nl-NL"))
+                        .previewDisplayName("Dutch NL")
     }
 }

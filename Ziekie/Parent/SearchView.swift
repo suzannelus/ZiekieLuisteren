@@ -139,6 +139,10 @@ struct SearchView: View {
         @State private var showingImagePlayground = false
         @State private var generatedImage: Image?
         
+        @State private var extractedPalette: ColorPalette?
+        @State private var isExtractingColors = false
+        @StateObject private var colorExtractor = ColorExtractionService.shared
+        
         var body: some View {
             HStack {
                 // OPTIMIZED: Smaller artwork, lazy loading
@@ -166,6 +170,20 @@ struct SearchView: View {
                 }
                 
                 Spacer()
+                
+                if isExtractingColors {
+                                HStack(spacing: 4) {
+                                    ProgressView()
+                                        .scaleEffect(0.6)
+                                        .tint(.mint)
+                                    Text("Colors...")
+                                        .font(.caption2)
+                                        .foregroundColor(.secondary)
+                                }
+                            } else if let palette = extractedPalette {
+                                ColorPalettePreview(palette: palette)
+                            }
+                        
                 
                 Button {
                     showingImagePlayground = true

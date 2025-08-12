@@ -2,8 +2,10 @@
 //  ColorExtractionService.swift
 //  Ziekie
 //
-//  Complete color extraction service - no external packages needed
+//  Created by Suzanne Lustenhouwer on 28/07/2025.
 //
+
+
 
 import SwiftUI
 import UIKit
@@ -94,7 +96,7 @@ class ColorExtractionService: ObservableObject {
         }
         
         // Fallback to first color or system blue
-        return colors.first ?? UIColor.systemBlue
+        return colors.first ?? UIColor.systemTeal
     }
     
     private func selectSecondary(from colors: [UIColor], avoiding avoided: [UIColor]) -> UIColor {

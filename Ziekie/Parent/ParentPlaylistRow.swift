@@ -51,9 +51,9 @@ struct ParentPlaylistRow: View {
                     
                     Spacer()
                     
-                    Text("♪ \(totalPlayCount) plays")
+                    Text("\(totalPlayCount) plays")
                         .font(.caption)
-                        .foregroundColor(.blue)
+                        .foregroundColor(.purple)
                 }
                 
                 if let lastPlayed = mostRecentPlay {
@@ -101,7 +101,7 @@ struct ParentPlaylistRow: View {
             }
         }
         .padding()
-        .background(.gray.opacity(isSelected ? 0.3 : 0.1))
+        .background(.purple.opacity(isSelected ? 0.3 : 0.1))
         .cornerRadius(12)
         .overlay(
             RoundedRectangle(cornerRadius: 12)
@@ -225,7 +225,10 @@ struct ParentPlaylistEditView: View {
                 Button("Done") {
                     dismiss()
                 }
-                .foregroundColor(.blue)
+                .font(.caption)
+                .foregroundColor(.white)
+               .glassEffect(.regular.tint( .pink).interactive())
+                
             }
         }
         .sheet(isPresented: $showingAddSongs) {
@@ -265,18 +268,12 @@ struct ParentPlaylistEditView: View {
                     .font(.subheadline)
                     .foregroundColor(.gray)
                 
-                if let concept = playlist.imageGenerationConcept {
-                    Text("Theme: \(concept)")
-                        .font(.caption)
-                        .foregroundColor(.blue)
-                        .lineLimit(2)
-                }
             }
             
             Spacer()
         }
         .padding()
-        .background(.gray.opacity(0.2))
+        .background(.purple.opacity(0.2))
         .cornerRadius(12)
     }
     
@@ -310,10 +307,10 @@ struct ParentPlaylistEditView: View {
         }) {
             Label("Add More Songs", systemImage: "plus.circle.fill")
                 .font(.headline)
-                .foregroundColor(.green)
+                .foregroundColor(.purple)
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(.green.opacity(0.2))
+                .background(.purple.opacity(0.2))
                 .cornerRadius(12)
         }
     }
@@ -371,9 +368,9 @@ struct ParentSongRow: View {
                     .foregroundColor(.white)
                     .lineLimit(1)
                 
-                Text("♪ \(song.playCount) plays")
+                Text("\(song.playCount) plays")
                     .font(.caption)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.gray)
             }
             
             Spacer()
@@ -388,7 +385,7 @@ struct ParentSongRow: View {
                 }) {
                     Image(systemName: "photo.circle")
                         .font(.title3)
-                        .foregroundColor(.purple)
+                        .foregroundColor(.teal)
                 }
                 
                 // Remove song button
@@ -398,7 +395,7 @@ struct ParentSongRow: View {
                 }) {
                     Image(systemName: "minus.circle")
                         .font(.title3)
-                        .foregroundColor(.red)
+                        .foregroundColor(.pink)
                 }
             }
         }
@@ -415,7 +412,12 @@ struct ParentSongRow: View {
         } message: {
             Text("Remove '\(song.title)' from this playlist?")
         }
+        .sheet(isPresented: $showingImageEditor) {
+                    ParentSongImageEditorView(song: song, playlist: playlist)
+                        .colorScheme(.dark)
+                }
     }
+    
     
     private func removeSongFromPlaylist() {
         guard let playlistIndex = container.playlists.firstIndex(where: { $0.id == playlist.id }) else { return }
@@ -445,23 +447,396 @@ struct EmptySongsView: View {
             
             Text("Tap 'Add More Songs' to get started")
                 .font(.caption)
-                .foregroundColor(.gray)
+                .foregroundColor(.purple)
         }
         .frame(maxWidth: .infinity)
         .padding(30)
-        .background(.gray.opacity(0.1))
+        .background(.purple.opacity(0.2))
         .cornerRadius(12)
     }
 }
 
 
 
-#Preview {
+// MARK: - Preview Macros
+
+#Preview("ParentPlaylistEditView - With Songs") {
+    NavigationStack {
+        ParentPlaylistEditView(playlist: .mockPlaylistWithSongs)
+    }
+    .preferredColorScheme(.dark)
+}
+
+#Preview("ParentPlaylistEditView - Empty Playlist") {
+    NavigationStack {
+        ParentPlaylistEditView(playlist: .mockEmptyPlaylist)
+    }
+    .preferredColorScheme(.dark)
+}
+
+#Preview("ParentPlaylistEditView - Large Playlist") {
+    NavigationStack {
+        ParentPlaylistEditView(playlist: .mockLargePlaylist)
+    }
+    .preferredColorScheme(.dark)
+}
+
+#Preview("ParentPlaylistRow - Selected") {
     ParentPlaylistRow(
-        playlist: Playlist(name: "Test Playlist", songs: []),
+        playlist: .mockPlaylistWithSongs,
+        isSelected: true,
+        showingBatchActions: true,
+        onSelectionChanged: { _ in }
+    )
+    .padding()
+    .background(Color.black)
+    .preferredColorScheme(.dark)
+}
+
+#Preview("ParentPlaylistRow - Normal") {
+    ParentPlaylistRow(
+        playlist: .mockPlaylistWithSongs,
         isSelected: false,
         showingBatchActions: false,
         onSelectionChanged: { _ in }
     )
-    .colorScheme(.dark)
+    .padding()
+    .background(Color.black)
+    .preferredColorScheme(.dark)
 }
+
+#Preview("ParentSongRow") {
+    VStack(spacing: 8) {
+        ParentSongRow(
+            song: .mockSong1,
+            playlist: .mockPlaylistWithSongs
+        )
+        
+        ParentSongRow(
+            song: .mockSong2,
+            playlist: .mockPlaylistWithSongs
+        )
+        
+        ParentSongRow(
+            song: .mockSongWithLongTitle,
+            playlist: .mockPlaylistWithSongs
+        )
+    }
+    .padding()
+    .background(Color.black)
+    .preferredColorScheme(.dark)
+}
+
+#Preview("EmptySongsView") {
+    EmptySongsView()
+        .padding()
+        .background(Color.black)
+        .preferredColorScheme(.dark)
+}
+
+// MARK: - Mock Data Extensions
+
+extension Playlist {
+    static let mockEmptyPlaylist = Playlist(
+   //     id: "empty_playlist",
+        name: "Empty Playlist",
+        customImage: Image("Row, Row, Row, Your Boat"),
+        songs: [],
+         // Replace with your actual image
+     //   effectivePalette: .mockPalette1
+    )
+    
+    static let mockPlaylistWithSongs = Playlist(
+  //      id: "playlist_with_songs",
+        name: "Kids Favorites",
+        customImage: Image("WheelsOnTheBus"),
+        songs: [
+            .mockSong1,
+            .mockSong2,
+            .mockSong3
+        ]
+       , // Replace with your actual image
+    //    effectivePalette: .mockPalette1
+    )
+    
+    static let mockLargePlaylist = Playlist(
+   //     id: "large_playlist",
+        name: "Big Collection of Songs",
+        customImage: Image("WheelsOnTheBus"),
+        songs: [
+            .mockSong1,
+            .mockSong2,
+            .mockSong3,
+            .mockSongWithLongTitle,
+            .mockSong1, // Duplicate for demonstration
+            .mockSong2,
+            .mockSong3,
+            .mockSongWithLongTitle
+        ],
+      // Replace with your actual image
+    //    effectivePalette: .mockPalette2
+    )
+}
+
+extension MusicItem {
+    static let mockSong1 = MusicItem(
+    //    id: "song_1",
+        songID: "song_1",
+        title: "Wheels on the Bus",
+        artworkURL: nil,
+        playCount: 15,
+        lastPlayedDate: Calendar.current.date(byAdding: .day, value: -1, to: Date()),
+        customImage: Image("WheelsOnTheBus"), // Replace with your actual image
+        
+    )
+    
+    static let mockSong2 = MusicItem(
+   //     id: "song_2",
+        songID: "song_2",
+        title: "Twinkle Twinkle Little Star",
+        artworkURL: URL(string: "https://example.com/artwork.jpg"),
+        playCount: 8,
+        lastPlayedDate: Calendar.current.date(byAdding: .day, value: -3, to: Date()),
+        customImage: nil,
+     
+    )
+    
+    static let mockSong3 = MusicItem(
+   //     id: "song_3",
+        songID: "song_3",
+        title: "Old MacDonald",
+        artworkURL: nil,
+        playCount: 22,
+        lastPlayedDate: Calendar.current.date(byAdding: .hour, value: -2, to: Date()),
+        customImage: nil,
+      
+    )
+    
+    static let mockSongWithLongTitle = MusicItem(
+ //       id: "song_4",
+        songID: "song_4",
+        title: "This is a Very Long Song Title That Should Test Text Truncation in the UI",
+        artworkURL: nil,
+        playCount: 3,
+        lastPlayedDate: Calendar.current.date(byAdding: .day, value: -7, to: Date()),
+        customImage: nil,
+       
+    )
+}
+
+// MARK: - Mock Managers (if needed for dependency injection)
+
+class MockPlaylistsContainer: ObservableObject {
+    static let shared = MockPlaylistsContainer()
+    
+    @Published var playlists: [Playlist] = [
+        .mockEmptyPlaylist,
+        .mockPlaylistWithSongs,
+        .mockLargePlaylist
+    ]
+    
+    private init() {}
+}
+
+class MockParentModeManager: ObservableObject {
+    static let shared = MockParentModeManager()
+    
+    private init() {}
+    
+    func resetInactivityTimer() {
+        print("Inactivity timer reset")
+    }
+}
+
+// MARK: - Mock Views (for dependencies)
+
+struct MockSearchView: View {
+    @Binding var selectedSongs: [MusicItem]
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 20) {
+                Text("Mock Search View")
+                    .font(.title)
+                    .foregroundColor(.white)
+                
+                Text("This would be your SearchView")
+                    .foregroundColor(.gray)
+                
+                Button("Add Mock Song") {
+                    selectedSongs.append(.mockSong1)
+                }
+                .padding()
+                .background(.blue)
+                .foregroundColor(.white)
+                .cornerRadius(8)
+                
+                Spacer()
+            }
+            .padding()
+            .navigationTitle("Search Songs")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .preferredColorScheme(.dark)
+    }
+}
+
+struct MockParentImageEditorView: View {
+    let playlist: Playlist
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 20) {
+                Text("Mock Image Editor")
+                    .font(.title)
+                    .foregroundColor(.white)
+                
+                Text("Editing image for: \(playlist.name)")
+                    .foregroundColor(.gray)
+                
+                if let image = playlist.customImage {
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 200, height: 200)
+                        .cornerRadius(12)
+                }
+                
+                Spacer()
+            }
+            .padding()
+            .navigationTitle("Edit Image")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .preferredColorScheme(.dark)
+    }
+}
+
+struct MockParentSongImageEditorView: View {
+    let song: MusicItem
+    let playlist: Playlist
+    @Environment(\.dismiss) private var dismiss
+    
+    var body: some View {
+        NavigationStack {
+            VStack(spacing: 20) {
+                Text("Mock Song Image Editor")
+                    .font(.title)
+                    .foregroundColor(.white)
+                
+                Text("Editing image for: \(song.title)")
+                    .foregroundColor(.gray)
+                
+                if let image = song.customImage {
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 150, height: 150)
+                        .cornerRadius(8)
+                }
+                
+                Spacer()
+            }
+            .padding()
+            .navigationTitle("Edit Song Image")
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbar {
+                ToolbarItem(placement: .navigationBarTrailing) {
+                    Button("Done") {
+                        dismiss()
+                    }
+                }
+            }
+        }
+        .preferredColorScheme(.dark)
+    }
+}
+
+// MARK: - Alternative Preview Provider Style
+
+struct ParentPlaylistEditView_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            // With songs
+            NavigationStack {
+                ParentPlaylistEditView(playlist: .mockPlaylistWithSongs)
+            }
+            .preferredColorScheme(.dark)
+            .previewDisplayName("With Songs")
+            
+            // Empty playlist
+            NavigationStack {
+                ParentPlaylistEditView(playlist: .mockEmptyPlaylist)
+            }
+            .preferredColorScheme(.dark)
+            .previewDisplayName("Empty Playlist")
+            
+            // Large playlist on smaller device
+            NavigationStack {
+                ParentPlaylistEditView(playlist: .mockLargePlaylist)
+            }
+            .preferredColorScheme(.dark)
+            .previewDevice("iPhone SE (3rd generation)")
+            .previewDisplayName("Large Playlist - Small Device")
+        }
+    }
+}
+
+// MARK: - Integration Notes and Recommendations
+
+/*
+ INTEGRATION NOTES:
+ 
+ 1. Replace Mock Views:
+    - Replace MockSearchView with your actual SearchView
+    - Replace MockParentImageEditorView with your actual ParentImageEditorView
+    - Replace MockParentSongImageEditorView with your actual ParentSongImageEditorView
+ 
+ 2. Update Image References:
+    - Replace "WheelsOnTheBus" with actual image names from your asset catalog
+    - Update artworkURL with real URLs if testing network images
+ 
+ 3. Model Structure:
+    - Adjust MusicItem and Playlist initializers to match your actual model
+    - Ensure all required properties are included
+ 
+ 4. Manager Dependencies:
+    - If your managers need to be injected, consider using environmentObject
+    - You might want to create protocols for easier testing
+ 
+ 5. ImagePlayground Integration:
+    - The code assumes ImagePlayground is available
+    - Adjust imports and dependencies as needed
+ 
+ DEPENDENCY INJECTION EXAMPLE:
+ 
+ If you want to make managers injectable for better testing:
+ 
+ // In your main app:
+ .environmentObject(PlaylistsContainer.shared)
+ .environmentObject(ParentModeManager.shared)
+ 
+ // In your view:
+ @EnvironmentObject private var container: PlaylistsContainer
+ @EnvironmentObject private var parentModeManager: ParentModeManager
+ 
+ // In previews:
+ .environmentObject(MockPlaylistsContainer.shared)
+ .environmentObject(MockParentModeManager.shared)
+ */

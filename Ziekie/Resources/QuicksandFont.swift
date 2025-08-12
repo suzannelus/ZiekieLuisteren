@@ -167,7 +167,7 @@ struct GradientText: View {
 struct RainbowText: View {
     let text: String
     let font: Font
-    let colors: [Color] = [.pink, .yellow, .blue, .mint, .purple]
+    let colors: [Color] = [.yellow, .teal, .blue, .pink, .purple, .orange, .cyan]
     
     var body: some View {
         HStack(spacing: 0) {
@@ -175,14 +175,11 @@ struct RainbowText: View {
                 Text(String(character))
                     .font(.system(.largeTitle, design: .rounded))
                     .fontWeight(.heavy)
-                    .background(.clear)
                     .foregroundColor(colors[index % colors.count])
                     .rotationEffect(Angle(degrees: Double.random(in: -14.0...14.0)))
                     
             }
         }
-        .background(.clear)
-
     }
 }
 
@@ -284,22 +281,29 @@ struct ColorfulTextExamples: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             // Rainbow text
-            RainbowText(text: "Tune", font: .merriweatherResponsive(.title))
-            RainbowText(text: "Gallery", font: .merriweatherResponsive(.title))
+            RainbowText(text: "Tune Gallery", font: .merriweatherResponsive(.title))
             // Gradient text
             Text("Tune Gallery")
                 .screenTitle()
                 .withGradient([.pink, .purple, .blue])
             
-            // 3D effect
-            Text("Speel & Leer")
-                .screenTitle()
-                .with3DEffect(.yellow, shadowColor: .orange)
+            
             
             // Simple rainbow modifier
             Text("🎵 Sing Along! 🎵")
                 .body()
                 .withGradient([.red, .orange, .yellow, .green, .blue])
+            
+            Text("Dit is de app titel")
+            
+            Text("Dit is een titel")
+                .captionBold()
+            Text("Dit is een body text Q")
+                .bodySmall()
+            Text("Dit is een song titel")
+            Text("Dit is een knop")
+            Text("Dit is de parent mode titel")
+            Text("")
         }
         .padding()
     }
