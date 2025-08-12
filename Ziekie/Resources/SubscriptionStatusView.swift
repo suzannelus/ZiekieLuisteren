@@ -7,6 +7,7 @@
 
 import SwiftUI
 
+/*
 struct SubscriptionStatusView: View {
     @ObservedObject private var authManager = MusicAuthManager.shared
     
@@ -56,3 +57,4 @@ struct SubscriptionStatusView: View {
 #Preview {
     SubscriptionStatusView()
 }
+*/

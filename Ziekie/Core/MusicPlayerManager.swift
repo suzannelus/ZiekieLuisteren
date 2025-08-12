@@ -22,8 +22,10 @@ class MusicPlayerManager: ObservableObject {
     
     private init() {}
     
-    // ENHANCED: Play song with playlist context
+    // ENHANCED: Play song with comprehensive subscription checking
     func playSong(with id: String, in playlist: Playlist) async {
+        debugPlaybackAttempt(songID: id)
+        
         currentPlayTask?.cancel()
         
         currentPlayTask = Task { @MainActor in
@@ -32,7 +34,35 @@ class MusicPlayerManager: ObservableObject {
                 return
             }
             
-            print("🎵 Starting playback for song: \(id)")
+            print("🎵 Starting playbook for song: \(id)")
+            
+            // CRITICAL: Check authorization first
+            let authManager = MusicAuthManager.shared
+            guard authManager.isAuthorized else {
+                await showError("Please allow access to Apple Music in Settings")
+                return
+            }
+            
+            // CRITICAL: Ensure subscription is loaded
+            if authManager.musicSubscription == nil {
+                print("🎵 No subscription loaded, requesting authorization...")
+                await authManager.requestAuthorizationWhenNeeded()
+                
+                // Wait a moment for subscription to load
+                try? await Task.sleep(nanoseconds: 1_000_000_000) // 1 second
+            }
+            
+            // ENHANCED: Check if user can play music
+            guard authManager.canPlayMusic else {
+                if authManager.shouldOfferSubscription {
+                    await showError("Apple Music subscription required to play songs")
+                    // Automatically show subscription offer
+                    authManager.showSubscriptionOffer()
+                } else {
+                    await showError("Unable to play Apple Music content. Please check your subscription.")
+                }
+                return
+            }
             
             // Update playlist context
             currentPlaylist = playlist
@@ -56,29 +86,38 @@ class MusicPlayerManager: ObservableObject {
             guard !Task.isCancelled else { return }
             
             do {
-                guard MusicAuthManager.shared.canPlayMusic else {
-                    await showError("Apple Music subscription required to play songs")
-                    currentlyPlayingSongID = previousSongID
-                    return
-                }
-                
+                // ENHANCED: Song lookup with better error handling
                 let songRequest = MusicCatalogResourceRequest<Song>(matching: \.id, equalTo: MusicItemID(rawValue: id))
                 let response = try await songRequest.response()
                 
                 guard let song = response.items.first else {
-                    await showError("Song not found or no longer available")
+                    await showError("Song not found or no longer available in Apple Music")
                     return
                 }
                 
+                // ENHANCED: Basic playability check using available Song properties
+                if song.playParameters == nil {
+                    print("⚠️ Song \(id) has no playParameters - may not be playable")
+                    // Continue anyway - let MusicKit handle the actual playback attempt
+                }
+                
+                if song.duration == nil || song.duration == 0 {
+                    print("⚠️ Song \(id) has no duration - may be unavailable")
+                    // Continue anyway - some songs may still be playable
+                }
+                
+                // Stop any current playback
                 try? await player.stop()
                 
                 guard !Task.isCancelled else { return }
                 
+                // Set up new queue and play
                 try await player.queue = [song]
                 try await player.play()
                 
                 guard !Task.isCancelled else { return }
                 
+                // Success - update state
                 playStartTime = Date()
                 currentPlaySession = PlaySession()
                 recordPlay(songID: id)
@@ -95,7 +134,28 @@ class MusicPlayerManager: ObservableObject {
                 
             } catch {
                 print("❌ Failed to play song \(id): \(error)")
-                await showError("Unable to play song: \(error.localizedDescription)")
+                
+                // ENHANCED: Better error handling using available error types
+                if let subscriptionError = error as? MusicSubscription.Error {
+                    switch subscriptionError {
+                    case .permissionDenied:
+                        await showError("Please allow access to Apple Music in Settings")
+                    case .privacyAcknowledgementRequired:
+                        await showError("Please accept Apple Music privacy policy")
+                    case .unknown:
+                        await showError("Apple Music subscription required")
+                        authManager.showSubscriptionOffer()
+                    @unknown default:
+                        await showError("Unable to play song: \(subscriptionError.localizedDescription)")
+                    }
+                } else if (error as NSError).domain == "ICError" {
+                    // Handle iTunes/iCloud errors
+                    await showError("Apple Music subscription required to play songs")
+                    authManager.showSubscriptionOffer()
+                } else {
+                    await showError("Unable to play song: \(error.localizedDescription)")
+                }
+                
                 currentlyPlayingSongID = nil
                 isPlaying = false
             }
@@ -146,22 +206,42 @@ class MusicPlayerManager: ObservableObject {
     
     // ENHANCED: Progress tracking
     private func startProgressTracking() {
+        // 🔧 FIX: Always clean up existing timer first
         progressTimer?.invalidate()
+        progressTimer = nil
         currentProgress = 0.0
         
         progressTimer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: true) { [weak self] _ in
             Task { @MainActor in
-                guard let self = self,
-                      self.isPlaying,
+                guard let self = self else { return }
+                
+                // 🔧 FIX: More robust state checking
+                guard self.isPlaying,
                       let startTime = self.playStartTime,
-                      self.currentDuration > 0 else { return }
+                      self.currentDuration > 0,
+                      self.progressTimer != nil else {
+                    // Clean up if conditions aren't met
+                    self.progressTimer?.invalidate()
+                    self.progressTimer = nil
+                    return
+                }
                 
                 let elapsed = Date().timeIntervalSince(startTime)
-                self.currentProgress = min(elapsed / self.currentDuration, 1.0)
+                let newProgress = min(elapsed / self.currentDuration, 1.0)
+                
+                // 🔧 FIX: Only update if progress actually changed
+                if abs(newProgress - self.currentProgress) > 0.01 {
+                    self.currentProgress = newProgress
+                }
                 
                 // Auto-advance when song ends
                 if self.currentProgress >= 1.0 {
                     self.progressTimer?.invalidate()
+                    self.progressTimer = nil
+                    
+                    // 🔧 FIX: Double-check we're still supposed to be playing
+                    guard self.isPlaying else { return }
+                    
                     await self.playNext()
                 }
             }
@@ -171,18 +251,33 @@ class MusicPlayerManager: ObservableObject {
     func togglePlayback() async {
         guard let currentSongID = currentlyPlayingSongID else { return }
         
+        // Check subscription before toggling
+        guard MusicAuthManager.shared.canPlayMusic else {
+            await showError("Apple Music subscription required")
+            return
+        }
+        
         do {
             if isPlaying {
+                // 🔧 FIX 1: Invalidate timer FIRST to prevent race conditions
+                progressTimer?.invalidate()
+                progressTimer = nil
+                
+                // 🔧 FIX 2: Reset playStartTime to prevent incorrect calculations
+                playStartTime = nil
+                
+                // 🔧 FIX 3: Set isPlaying = false AFTER timer cleanup
+                isPlaying = false
+                
                 try await player.pause()
                 recordPlayPause()
-                isPlaying = false
-                progressTimer?.invalidate()
                 print("⏸️ Paused song: \(currentSongID)")
+                
             } else {
                 try await player.play()
-                if playStartTime == nil {
-                    playStartTime = Date()
-                }
+                
+                // 🔧 FIX 4: Set playStartTime when actually resuming
+                playStartTime = Date()
                 isPlaying = true
                 startProgressTracking()
                 print("▶️ Resumed song: \(currentSongID)")
@@ -190,6 +285,13 @@ class MusicPlayerManager: ObservableObject {
         } catch {
             await showError("Unable to toggle playback: \(error.localizedDescription)")
         }
+    }
+    
+    // 🔧 BONUS: Add this helper method for complete cleanup
+    func forceStopTimer() {
+        progressTimer?.invalidate()
+        progressTimer = nil
+        playStartTime = nil
     }
     
     func stopPlayback() async {
@@ -257,5 +359,134 @@ class MusicPlayerManager: ObservableObject {
         } catch {
             print("Failed to save analytics: \(error.localizedDescription)")
         }
+    }
+    
+    
+    
+    /// Seeks to a specific time in the current song
+    func seekTo(time: TimeInterval) async {
+        guard currentDuration > 0,
+              time >= 0,
+              time <= currentDuration else {
+            print("⚠️ Invalid seek time or no active player")
+            resumeProgressUpdates()
+            return
+        }
+        
+        do {
+            // More reliable seeking approach for MusicKit
+            let wasPlaying = isPlaying
+            
+            // Stop current playback
+            try await player.pause()
+            
+            // Set the playback time
+            player.playbackTime = time
+            
+            // Update our internal tracking
+            playStartTime = Date().addingTimeInterval(-time)
+            currentProgress = time / currentDuration
+            
+            // Resume playback if it was playing before
+            if wasPlaying {
+                try await player.play()
+                isPlaying = true
+            }
+            
+            // Resume progress tracking
+            resumeProgressUpdates()
+            
+            print("✅ Successfully seeked to \(formatTime(time))")
+            
+        } catch {
+            print("❌ Failed to seek: \(error)")
+            resumeProgressUpdates()
+        }
+    }
+    
+    /// Temporarily pauses for seeking (different from regular pause)
+    func pauseForSeeking() async {
+        do {
+            try await player.pause()
+            // Don't change isPlaying state - this is just for seeking
+        } catch {
+            print("❌ Failed to pause for seeking: \(error)")
+        }
+    }
+    
+    /// Pauses progress updates during seeking
+    func pauseProgressUpdates() {
+        progressTimer?.invalidate()
+        progressTimer = nil
+    }
+    
+    /// Resumes progress updates after seeking
+    func resumeProgressUpdates() {
+        guard isPlaying, progressTimer == nil else { return }
+        startProgressTracking()
+    }
+    
+    private func formatTime(_ timeInterval: TimeInterval) -> String {
+        let totalSeconds = Int(max(0, timeInterval))
+        let minutes = totalSeconds / 60
+        let seconds = totalSeconds % 60
+        return String(format: "%d:%02d", minutes, seconds)
+    }
+}
+
+// ENHANCED: Debug function with subscription details
+
+
+extension MusicPlayerManager {
+    func debugPlaybackAttempt(songID: String) {
+        print("🎵 === Enhanced Playback Debug ===")
+        print("🎵 Attempting to play song: \(songID)")
+        
+        let authManager = MusicAuthManager.shared
+        
+        // INLINE: Debug auth state without external method dependency
+        print("🎵 === MusicKit Debug State ===")
+        print("🎵 isAuthorized: \(authManager.isAuthorized)")
+        print("🎵 hasInitialized: \(authManager.hasInitialized)")
+        
+        if let subscription = authManager.musicSubscription {
+            print("🎵 musicSubscription: EXISTS")
+            print("🎵   - canPlayCatalogContent: \(subscription.canPlayCatalogContent)")
+            print("🎵   - canBecomeSubscriber: \(subscription.canBecomeSubscriber)")
+            print("🎵   - hasCloudLibraryEnabled: \(subscription.hasCloudLibraryEnabled)")
+        } else {
+            print("🎵 musicSubscription: NIL")
+        }
+        
+        print("🎵 canPlayMusic: \(authManager.canPlayMusic)")
+        print("🎵 shouldOfferSubscription: \(authManager.shouldOfferSubscription)")
+        print("🎵 authorizationError: \(authManager.authorizationError ?? "none")")
+        
+        #if targetEnvironment(simulator)
+        print("🎵 Running in SIMULATOR")
+        #else
+        print("🎵 Running on REAL DEVICE")
+        #endif
+        print("🎵 === End MusicKit Debug ===")
+        
+        print("🎵 Final canPlayMusic result: \(authManager.canPlayMusic)")
+        
+        if !authManager.canPlayMusic {
+            print("🎵 ❌ CANNOT PLAY MUSIC")
+            if !authManager.isAuthorized {
+                print("🎵   Reason: Not authorized")
+            } else if authManager.musicSubscription == nil {
+                print("🎵   Reason: No subscription object")
+            } else if !(authManager.musicSubscription?.canPlayCatalogContent ?? false) {
+                print("🎵   Reason: Subscription doesn't allow catalog playback")
+                if authManager.musicSubscription?.canBecomeSubscriber ?? false {
+                    print("🎵   Note: User can subscribe")
+                }
+            }
+        } else {
+            print("🎵 ✅ CAN PLAY MUSIC")
+        }
+        
+        print("🎵 === End Enhanced Playback Debug ===")
     }
 }

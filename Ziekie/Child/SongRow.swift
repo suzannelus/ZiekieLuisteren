@@ -12,6 +12,7 @@ struct SongRow: View {
     let musicItems: MusicItem
     let playlist: Playlist
     @StateObject private var playerManager = MusicPlayerManager.shared
+    @StateObject private var container = PlaylistsContainer.shared
     
     // Computed properties for cleaner state management
     private var isThisSongSelected: Bool {
@@ -24,124 +25,73 @@ struct SongRow: View {
     
     // Use song's colors if available, otherwise playlist's colors
     private var effectiveColorPalette: ColorPalette {
-        musicItems.colorPalette ?? playlist.effectivePalette
+        currentSong.colorPalette ?? playlist.effectivePalette  // CHANGED
+    }
+    
+    private var currentSong: MusicItem {
+        guard let currentPlaylist = container.playlists.first(where: { $0.id == playlist.id }),
+              let song = currentPlaylist.songs.first(where: { $0.id == musicItems.id }) else {
+            return musicItems
+        }
+        return song
     }
     
     var body: some View {
         NavigationLink(destination: SongView(playlist: playlist, initialSongID: musicItems.songID)) {
-            VStack(spacing: 8) {
-                // Song Artwork
-                Group {
-                    if let customImage = musicItems.customImage {
-                        customImage
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                    } else if let artworkURL = musicItems.artworkURL {
-                        AsyncImage(url: artworkURL) { phase in
-                            switch phase {
-                            case .empty:
-                                ProgressView()
-                                    .tint(effectiveColorPalette.primaryColor)
-                                
-                            case .success(let image):
-                                image
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fill)
-                            case .failure(_):
-                                Image("WheelsOnTheBus")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                
-                            @unknown default:
-                                Image("WheelsOnTheBus")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                            }
-                        }
-                    } else {
-                        Image("WheelsOnTheBus")
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                        
-                    }
-                }
-                .frame(width: 60, height: 60)
-                .cornerRadius(8)
-                .background(effectiveColorPalette.backgroundColor.opacity(0.3))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(
-                            effectiveColorPalette.primaryColor.opacity(0.2),
-                            lineWidth: 1
+            ZStack {
+                VStack(spacing: 8) {
+                    // Song Artwork
+                    currentSong.displayImage
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 120, height: 120)
+                        .cornerRadius(12)
+                        .shadow(
+                            color: effectiveColorPalette.primaryColor.opacity(0.8),
+                            radius: 2,
+                            x: 0,
+                            y: 1
                         )
-                )
-                .shadow(
-                    color: effectiveColorPalette.primaryColor.opacity(0.1),
-                    radius: 2,
-                    x: 0,
-                    y: 1
-                )
-                
-                // Song Info
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(musicItems.title)
-                        .font(.headline)
-                        .lineLimit(1)
-                        .foregroundColor(effectiveColorPalette.textColor)
-                    
-                    // Play count or additional info
-                    if musicItems.playCount > 0 {
-                        HStack(spacing: 4) {
-                            Image(systemName: "play.circle.fill")
-                                .font(.caption)
-                                .foregroundColor(effectiveColorPalette.accentColor)
-                            
-                            Text("Played \(musicItems.playCount) times")
-                                .font(.caption)
-                                .foregroundColor(effectiveColorPalette.secondaryColor)
-                        }
-                    } else {
-                        Text("Tap to play")
-                            .font(.caption)
-                            .foregroundColor(effectiveColorPalette.secondaryColor.opacity(0.8))
+                    // Song Info
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(musicItems.title)
+                            .bodyLarge()
+                            .lineLimit(2)
+                            .foregroundColor(effectiveColorPalette.textColor)
                     }
+                    
                 }
+                    // Playing indicator
+                    if isThisSongSelected {
+                        PlayingIndicator(
+                            isPlaying: isThisSongPlaying,
+                            palette: effectiveColorPalette
+                        )
+                    }
                 
-                Spacer()
-                
-                // Playing indicator
-                if isThisSongSelected {
-                    PlayingIndicator(
-                        isPlaying: isThisSongPlaying,
-                        palette: effectiveColorPalette
-                    )
-                }
-                Image(systemName: "chevron.right")
-                    .font(.caption)
-                    .foregroundColor(effectiveColorPalette.secondaryColor.opacity(0.6))
             }
             .padding(.vertical, 4)
             .background(
                 // Subtle background highlight when song is selected
                 RoundedRectangle(cornerRadius: 8)
                     .fill(
+                        
                         isThisSongSelected ?
-                        effectiveColorPalette.primaryColor.opacity(0.05) :
-                            Color.clear
+                        LinearGradient(colors: [effectiveColorPalette.primaryColor.opacity(0.4), .clear], startPoint: .top, endPoint: .bottom):
+                            LinearGradient(colors: [.clear, .clear], startPoint: .top, endPoint: .bottom)
                     )
             )
             .overlay(
                 // Accent border when playing
-                RoundedRectangle(cornerRadius: 8)
+                RoundedRectangle(cornerRadius: 12)
                     .stroke(
                         isThisSongPlaying ?
-                        effectiveColorPalette.accentColor.opacity(0.3) :
+                        effectiveColorPalette.accentColor.opacity(0.8) :
                             Color.clear,
                         lineWidth: 1
                     )
             )
         }
-        .buttonStyle(PlainButtonStyle())
         .animation(.easeInOut(duration: 0.2), value: isThisSongSelected)
         .animation(.easeInOut(duration: 0.2), value: isThisSongPlaying)
     }
@@ -167,11 +117,6 @@ struct PlayingIndicator: View {
                     .scaleEffect(isPlaying ? 1.1 : 1.0)
                     .animation(.easeInOut(duration: 0.6).repeatForever(autoreverses: true), value: isPlaying)
             }
-            
-            Text(isPlaying ? "Playing" : "Paused")
-                .font(.caption2)
-                .foregroundColor(palette.accentColor)
-                .fontWeight(.medium)
         }
         .scaleEffect(isPlaying ? 1.05 : 1.0)
         .animation(.easeInOut(duration: 0.2), value: isPlaying)
@@ -181,8 +126,9 @@ struct PlayingIndicator: View {
 #Preview {
     let sampleSong = MusicItem(
         songID: "test123",
-        title: "Test Song",
-        artworkURL: nil,
+        title: "Row, Row, Row, Your Boat",
+       // artworkURL: nil,
+        customImage: Image("Row, Row, Row Your Boat"),
         palette: ColorPalette(
             primary: UIColor.systemOrange,
             secondary: UIColor.systemYellow,

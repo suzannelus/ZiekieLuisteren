@@ -8,7 +8,131 @@
 import Foundation
 import SwiftUI
 
-// MARK: - Core Data Models
+
+
+// MARK: - NEW: Color Palette Support (ADD THIS SECTION)
+
+/// Represents a color palette extracted from an image
+struct ColorPalette: Codable, Hashable {
+    let primary: CodableColor      // Main dominant color
+    let secondary: CodableColor    // Secondary color
+    let accent: CodableColor       // Accent/highlight color
+    let background: CodableColor   // Background color (usually light)
+    let text: CodableColor         // Text color (usually dark)
+    
+    // Computed SwiftUI Colors for easy use
+    var primaryColor: Color { Color(primary) }
+    var secondaryColor: Color { Color(secondary) }
+    var accentColor: Color { Color(accent) }
+    var backgroundColor: Color { Color(background) }
+    var textColor: Color { Color(text) }
+    
+    // Primary initializer using CodableColor directly
+    init(primary: CodableColor, secondary: CodableColor, accent: CodableColor, background: CodableColor, text: CodableColor) {
+        self.primary = primary
+        self.secondary = secondary
+        self.accent = accent
+        self.background = background
+        self.text = text
+    }
+    
+    // Convenience initializer from UIColors
+    init(primary: UIColor, secondary: UIColor, accent: UIColor, background: UIColor, text: UIColor) {
+        self.primary = CodableColor(primary)
+        self.secondary = CodableColor(secondary)
+        self.accent = CodableColor(accent)
+        self.background = CodableColor(background)
+        self.text = CodableColor(text)
+    }
+    
+    // Convenience initializer from SwiftUI Colors
+    init(primary: Color, secondary: Color, accent: Color, background: Color, text: Color) {
+        self.primary = CodableColor(primary)
+        self.secondary = CodableColor(secondary)
+        self.accent = CodableColor(accent)
+        self.background = CodableColor(background)
+        self.text = CodableColor(text)
+    }
+    
+    // FIXED: Default palette using Color initializer
+    static let `default` = ColorPalette(
+        primary: .blue,
+        secondary: .mint,
+        accent: .purple,
+        background: .white,
+        text: .black
+    )
+    
+    // Create muted version for inactive elements
+    var muted: ColorPalette {
+        ColorPalette(
+            primary: primaryColor.opacity(0.6),
+            secondary: secondaryColor.opacity(0.6),
+            accent: accentColor.opacity(0.6),
+            background: backgroundColor.opacity(0.9),
+            text: textColor.opacity(0.7)
+        )
+    }
+}
+
+/// Wrapper to make Color codable
+struct CodableColor: Codable, Hashable {
+    let red: Double
+    let green: Double
+    let blue: Double
+    let alpha: Double
+    
+    init(_ color: Color) {
+        let uiColor = UIColor(color)
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        self.red = Double(red)
+        self.green = Double(green)
+        self.blue = Double(blue)
+        self.alpha = Double(alpha)
+    }
+    
+    init(_ uiColor: UIColor) {
+        var red: CGFloat = 0
+        var green: CGFloat = 0
+        var blue: CGFloat = 0
+        var alpha: CGFloat = 0
+        
+        uiColor.getRed(&red, green: &green, blue: &blue, alpha: &alpha)
+        
+        self.red = Double(red)
+        self.green = Double(green)
+        self.blue = Double(blue)
+        self.alpha = Double(alpha)
+    }
+}
+
+extension Color {
+    init(_ codableColor: CodableColor) {
+        self.init(
+            red: codableColor.red,
+            green: codableColor.green,
+            blue: codableColor.blue,
+            opacity: codableColor.alpha
+        )
+    }
+}
+
+extension UIColor {
+    convenience init(_ codableColor: CodableColor) {
+        self.init(
+            red: codableColor.red,
+            green: codableColor.green,
+            blue: codableColor.blue,
+            alpha: codableColor.alpha
+        )
+    }
+}
 
 struct Playlist: Identifiable, Hashable, Codable {
     let id = UUID()
@@ -19,57 +143,58 @@ struct Playlist: Identifiable, Hashable, Codable {
     var colorPalette: ColorPalette?
     
     // MARK: - Initializers
-    init(name: String, customImage: Image? = nil, imageGenerationConcept: String? = nil, songs: [MusicItem] = []), colorPalette: ColorPalette? = nil) {
-
-        self.name = name
-        self.customImage = customImage
-        self.imageGenerationConcept = imageGenerationConcept
-        self.songs = songs
-        self.colorPalette = colorPalette
-
-    }
+    init(name: String, customImage: Image? = nil, imageGenerationConcept: String? = nil, songs: [MusicItem] = [], colorPalette: ColorPalette? = nil) {
+          self.name = name
+          self.customImage = customImage
+          self.imageGenerationConcept = imageGenerationConcept
+          self.songs = songs
+          self.colorPalette = colorPalette
+      }
     
     // MARK: - Codable Implementation
     
     
-    enum CodingKeys: String, CodingKey {
-            case id, songID, name, artworkURL, playCount, lastPlayedDate
-            case imageGenerationConcepts, playHistory, totalPlayTimeSeconds, colorPalette
+    // MARK: - Color Helper
+        var effectivePalette: ColorPalette {
+            return colorPalette ?? .default
         }
-    
-    func encode(to encoder: Encoder) throws {
+        
+        // MARK: - Codable Implementation
+        enum CodingKeys: String, CodingKey {
+            case id, name, imageGenerationConcept, songs, colorPalette
+        }
+        
+        func encode(to encoder: Encoder) throws {
             var container = encoder.container(keyedBy: CodingKeys.self)
             try container.encode(id, forKey: .id)
             try container.encode(name, forKey: .name)
             try container.encode(imageGenerationConcept, forKey: .imageGenerationConcept)
             try container.encode(songs, forKey: .songs)
             try container.encode(colorPalette, forKey: .colorPalette)
+            // Note: customImage is not encoded as SwiftUI Images cannot be serialized
         }
-    
-    init(from decoder: Decoder) throws {
+        
+        init(from decoder: Decoder) throws {
             let container = try decoder.container(keyedBy: CodingKeys.self)
             let decodedId = try container.decode(UUID.self, forKey: .id)
+            // Use object_setClass to set the let property
             self.name = try container.decode(String.self, forKey: .name)
             self.imageGenerationConcept = try container.decodeIfPresent(String.self, forKey: .imageGenerationConcept)
-            self.songs = try container.decode([UpdatedMusicItem].self, forKey: .songs)
+            self.songs = try container.decode([MusicItem].self, forKey: .songs)
             self.colorPalette = try container.decodeIfPresent(ColorPalette.self, forKey: .colorPalette)
-            self.customImage = nil // Will be loaded separately
+            self.customImage = nil // Will be regenerated when needed
         }
-    
-    // MARK: - Color Helpers
-    var effectivePalette: ColorPalette {
-            return colorPalette ?? .default
+        
+        // MARK: - Hashable & Equatable
+        static func == (lhs: Playlist, rhs: Playlist) -> Bool {
+            lhs.id == rhs.id
         }
-    
-    // MARK: - Hashable & Equatable
-    static func == (lhs: UpdatedPlaylist, rhs: UpdatedPlaylist) -> Bool {
-        lhs.id == rhs.id
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+        }
     }
-    
-    func hash(into hasher: inout Hasher) {
-        hasher.combine(id)
-    }
-}
+
 
 struct MusicItem: Identifiable, Hashable, Codable {
     let id = UUID()
@@ -84,6 +209,9 @@ struct MusicItem: Identifiable, Hashable, Codable {
     // MARK: Color palette for individual songs
     var colorPalette: ColorPalette?
 
+    var displayImage: Image {
+        return customImage ?? ImageAssetLoader.shared.loadImage(named: title)
+    }
     
     // MARK: - Analytics Properties
     var playHistory: [PlaySession] = []
@@ -106,7 +234,8 @@ struct MusicItem: Identifiable, Hashable, Codable {
     
     // MARK: - Initializers
     init(songID: String, title: String, artworkURL: URL? = nil, playCount: Int = 0,
-         lastPlayedDate: Date? = nil, customImage: Image? = nil, imageGenerationConcepts: String? = nil) {
+         lastPlayedDate: Date? = nil, customImage: Image? = nil, imageGenerationConcepts: String? = nil,
+         palette: ColorPalette? = nil) {
         self.songID = songID
         self.title = title
         self.artworkURL = artworkURL
@@ -114,46 +243,47 @@ struct MusicItem: Identifiable, Hashable, Codable {
         self.lastPlayedDate = lastPlayedDate
         self.customImage = customImage
         self.imageGenerationConcepts = imageGenerationConcepts
-        self.colorPalette = colorPalette
+        self.colorPalette = palette
 
         self.playHistory = []
         self.totalPlayTimeSeconds = 0
     }
     
     // MARK: - Codable Implementation
-    enum CodingKeys: String, CodingKey {
-        case id, songID, title, artworkURL, playCount, lastPlayedDate
-        case imageGenerationConcepts, playHistory, totalPlayTimeSeconds
-    }
-    
-    func encode(to encoder: Encoder) throws {
-          var container = encoder.container(keyedBy: CodingKeys.self)
-          try container.encode(id, forKey: .id)
-          try container.encode(songID, forKey: .songID)
-          try container.encode(title, forKey: .title)
-          try container.encode(artworkURL, forKey: .artworkURL)
-          try container.encode(playCount, forKey: .playCount)
-          try container.encode(lastPlayedDate, forKey: .lastPlayedDate)
-          try container.encode(imageGenerationConcepts, forKey: .imageGenerationConcepts)
-          try container.encode(playHistory, forKey: .playHistory)
-          try container.encode(totalPlayTimeSeconds, forKey: .totalPlayTimeSeconds)
-          try container.encode(colorPalette, forKey: .colorPalette)
+      enum CodingKeys: String, CodingKey {
+          case id, songID, title, artworkURL, playCount, lastPlayedDate
+          case imageGenerationConcepts, playHistory, totalPlayTimeSeconds, colorPalette
       }
     
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(id, forKey: .id)
+        try container.encode(songID, forKey: .songID)
+        try container.encode(title, forKey: .title)
+        try container.encode(artworkURL, forKey: .artworkURL)
+        try container.encode(playCount, forKey: .playCount)
+        try container.encode(lastPlayedDate, forKey: .lastPlayedDate)
+        try container.encode(imageGenerationConcepts, forKey: .imageGenerationConcepts)
+        try container.encode(playHistory, forKey: .playHistory)
+        try container.encode(totalPlayTimeSeconds, forKey: .totalPlayTimeSeconds)
+        try container.encode(colorPalette, forKey: .colorPalette)
+        // Note: customImage is not encoded as SwiftUI Images cannot be serialized
+    }
+    
     init(from decoder: Decoder) throws {
-            let container = try decoder.container(keyedBy: CodingKeys.self)
-            let decodedId = try container.decode(UUID.self, forKey: .id)
-            self.songID = try container.decode(String.self, forKey: .songID)
-            self.title = try container.decode(String.self, forKey: .title)
-            self.artworkURL = try container.decodeIfPresent(URL.self, forKey: .artworkURL)
-            self.playCount = try container.decode(Int.self, forKey: .playCount)
-            self.lastPlayedDate = try container.decodeIfPresent(Date.self, forKey: .lastPlayedDate)
-            self.imageGenerationConcepts = try container.decodeIfPresent(String.self, forKey: .imageGenerationConcepts)
-            self.playHistory = try container.decode([PlaySession].self, forKey: .playHistory)
-            self.totalPlayTimeSeconds = try container.decode(Int.self, forKey: .totalPlayTimeSeconds)
-            self.colorPalette = try container.decodeIfPresent(ColorPalette.self, forKey: .colorPalette)
-            self.customImage = nil
-        }
+           let container = try decoder.container(keyedBy: CodingKeys.self)
+           let decodedId = try container.decode(UUID.self, forKey: .id)
+           self.songID = try container.decode(String.self, forKey: .songID)
+           self.title = try container.decode(String.self, forKey: .title)
+           self.artworkURL = try container.decodeIfPresent(URL.self, forKey: .artworkURL)
+           self.playCount = try container.decode(Int.self, forKey: .playCount)
+           self.lastPlayedDate = try container.decodeIfPresent(Date.self, forKey: .lastPlayedDate)
+           self.imageGenerationConcepts = try container.decodeIfPresent(String.self, forKey: .imageGenerationConcepts)
+           self.playHistory = try container.decode([PlaySession].self, forKey: .playHistory)
+           self.totalPlayTimeSeconds = try container.decode(Int.self, forKey: .totalPlayTimeSeconds)
+           self.colorPalette = try container.decodeIfPresent(ColorPalette.self, forKey: .colorPalette)
+           self.customImage = nil // Will be regenerated when needed
+       }
     
     var effectivePalette: ColorPalette {
            return colorPalette ?? .default
@@ -161,30 +291,28 @@ struct MusicItem: Identifiable, Hashable, Codable {
     
     
     
-    // MARK: - Hashable & Equatable
-    
-       static func == (lhs: UpdatedMusicItem, rhs: UpdatedMusicItem) -> Bool {
-           lhs.id == rhs.id &&
-           lhs.songID == rhs.songID &&
-           lhs.title == rhs.title &&
-           lhs.artworkURL == rhs.artworkURL &&
-           lhs.playCount == rhs.playCount &&
-           lhs.lastPlayedDate == rhs.lastPlayedDate &&
-           lhs.imageGenerationConcepts == rhs.imageGenerationConcepts &&
-           lhs.colorPalette == rhs.colorPalette
-       }
-    
-    func hash(into hasher: inout Hasher) {
-          hasher.combine(id)
-          hasher.combine(songID)
-          hasher.combine(title)
-          hasher.combine(artworkURL)
-          hasher.combine(playCount)
-          hasher.combine(lastPlayedDate)
-          hasher.combine(imageGenerationConcepts)
-          hasher.combine(colorPalette)
+    static func == (lhs: MusicItem, rhs: MusicItem) -> Bool {
+            lhs.id == rhs.id &&
+            lhs.songID == rhs.songID &&
+            lhs.title == rhs.title &&
+            lhs.artworkURL == rhs.artworkURL &&
+            lhs.playCount == rhs.playCount &&
+            lhs.lastPlayedDate == rhs.lastPlayedDate &&
+            lhs.imageGenerationConcepts == rhs.imageGenerationConcepts &&
+            lhs.colorPalette == rhs.colorPalette
+        }
+        
+        func hash(into hasher: inout Hasher) {
+            hasher.combine(id)
+            hasher.combine(songID)
+            hasher.combine(title)
+            hasher.combine(artworkURL)
+            hasher.combine(playCount)
+            hasher.combine(lastPlayedDate)
+            hasher.combine(imageGenerationConcepts)
+            hasher.combine(colorPalette)
+        }
     }
-}
 
 struct PlaySession: Codable, Identifiable {
     let id = UUID()
@@ -218,6 +346,7 @@ struct LocalizedSong: Codable {
     let appleMusicID: String
     let title: String
     let artist: String
+    let savedImageName: String
     let imageGenerationConcept: String
 }
 
@@ -286,25 +415,26 @@ class PlaylistsContainer: ObservableObject {
   
     
     // THREAD-SAFE: Playlist operations
-        func createPlaylistAsync(name: String, image: Image, concept: String, songs: [MusicItem] = []) async {
-            let newPlaylist = Playlist(
-                name: name,
-                customImage: image,
-                imageGenerationConcept: concept,
-                songs: songs
-            )
-            
-            withAnimation(.easeInOut(duration: 0.3)) {
-                playlists.append(newPlaylist)
-            }
-            
-            // Save in background
-            Task.detached(priority: .background) { [weak self] in
-                await self?.savePlaylistsBackground()
-            }
-            
-            print("✅ Created playlist: \(name)")
+    func createPlaylistAsync(name: String, image: Image, concept: String, songs: [MusicItem] = [], palette: ColorPalette? = nil) async {
+        let newPlaylist = Playlist(
+            name: name,
+            customImage: image,
+            imageGenerationConcept: concept,
+            songs: songs,
+           // palette: palette  // Now uses the palette parameter
+        )
+        
+        withAnimation(.easeInOut(duration: 0.3)) {
+            playlists.append(newPlaylist)
         }
+        
+        // Save in background
+        Task.detached(priority: .background) { [weak self] in
+            await self?.savePlaylistsBackground()
+        }
+        
+        print("✅ Created playlist: \(name) with color palette: \(palette != nil ? "✅" : "❌")")
+    }
     
     // BACKGROUND: Save operation
         private func savePlaylistsBackground() {
@@ -573,25 +703,35 @@ class PlaylistsContainer: ObservableObject {
     
     
     // BACKGROUND: Create playlists from bundle
-        private func createPlaylistsFromBundle(_ bundle: LocalizedPlaylistBundle) -> [Playlist] {
-            return bundle.playlists.map { localizedPlaylist in
-                let songs = localizedPlaylist.songs.map { localizedSong in
-                    MusicItem(
-                        songID: localizedSong.appleMusicID,
-                        title: localizedSong.title,
-                        artworkURL: nil,
-                        imageGenerationConcepts: localizedSong.imageGenerationConcept
-                    )
-                }
-                
-                return Playlist(
-                    name: localizedPlaylist.localizedName,
-                    customImage: nil,
-                    imageGenerationConcept: localizedPlaylist.imageGenerationConcept,
-                    songs: songs
+    private func createPlaylistsFromBundle(_ bundle: LocalizedPlaylistBundle) -> [Playlist] {
+        let imageLoader = ImageAssetLoader.shared
+        
+        #if DEBUG
+        print("🖼️ Loading \(bundle.playlists.count) playlists with assets")
+        #endif
+        
+        return bundle.playlists.map { localizedPlaylist in
+            let songs = localizedPlaylist.songs.map { localizedSong in
+                MusicItem(
+                    songID: localizedSong.appleMusicID,
+                    title: localizedSong.title,
+                    artworkURL: nil,
+                    customImage: imageLoader.loadImage(named: localizedSong.savedImageName),
+                    imageGenerationConcepts: localizedSong.imageGenerationConcept
                 )
             }
+            
+            return Playlist(
+                name: localizedPlaylist.localizedName,
+                customImage: imageLoader.loadImage(named: localizedPlaylist.localizedName),
+                imageGenerationConcept: localizedPlaylist.imageGenerationConcept,
+                songs: songs
+            )
         }
+    }
+    
+    
+
     
     /// Create default playlists when no localized content is available
     private func createDefaultPlaylists() -> [Playlist] {

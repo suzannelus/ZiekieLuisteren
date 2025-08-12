@@ -1,3 +1,11 @@
+//
+//  ParentSongImageEditorView.swift
+//  Ziekie
+//
+//  Created by Suzanne Lustenhouwer on 29/07/2025.
+//
+
+
 import SwiftUI
 import ImagePlayground
 import PhotosUI
@@ -21,11 +29,16 @@ struct ParentSongImageEditorView: View {
     
     @State private var imagePlaygroundTimer: Timer?
     
+    // song saver
+    @State private var showingSaveSuccess = false
+    @State private var saveMessage = ""
+    @State private var saveSuccessful = false
+    
     init(song: MusicItem, playlist: Playlist) {
         self.song = song
         self.playlist = playlist
         // Use song's existing concept or generate one from the song title
-        let defaultConcept = song.imageGenerationConcept ?? "Album artwork for the song '\(song.title)' with colorful musical elements"
+        let defaultConcept = song.imageGenerationConcepts ?? "Album artwork for the song '\(song.title)' with colorful musical elements"
         self._imageGenerationConcept = State(initialValue: defaultConcept)
     }
     
@@ -76,6 +89,9 @@ struct ParentSongImageEditorView: View {
                 if newImage != nil {
                     Button("Save") {
                         saveImageWithColors()
+                        Task { @MainActor in
+                            container.playlists = container.playlists  // Force UI refresh
+                        }
                     }
                     .foregroundColor(.green)
                     .fontWeight(.semibold)
@@ -146,13 +162,27 @@ struct ParentSongImageEditorView: View {
                         .font(.caption)
                         .foregroundColor(.blue)
                     
-                    if let concept = song.imageGenerationConcept {
+                    if let concept = song.imageGenerationConcepts {
                         Text("Theme: \(concept)")
                             .font(.caption)
                             .foregroundColor(.gray)
                             .lineLimit(2)
                     }
+                    Button("Save to Photos App") {
+                        saveImageToPhotos(format: .png)
+                    }
+                    .font(.subheadline)
+                    .fontWeight(.medium)
+                    .frame(maxWidth: .infinity)
+                    .padding()
+                    .background(.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(12)
                     
+                    Text("💡 Save to Photos to add custom images to your Xcode project")
+                        .font(.caption2)
+                        .foregroundColor(.gray)
+                        .multilineTextAlignment(.center)
                     // Show current colors if available
                     if let palette = song.colorPalette {
                         HStack {
@@ -163,15 +193,45 @@ struct ParentSongImageEditorView: View {
                         }
                     }
                 }
-                
+                .alert("Save Result", isPresented: $showingSaveSuccess) {
+                    Button("OK") {
+                        showingSaveSuccess = false
+                    }
+                } message: {
+                    Text(saveMessage)
+                }
                 Spacer()
             }
         }
         .padding()
         .background(.gray.opacity(0.2))
         .cornerRadius(12)
+        
     }
     
+    // photo saver 
+    private func saveImageToPhotos(format: PhotoSaver.ImageFormat = .png) {
+        guard let uiImage = newUIImage else {
+            saveMessage = "No image available to save"
+            saveSuccessful = false
+            showingSaveSuccess = true
+            return
+        }
+        
+        isExtractingColors = true
+        
+        PhotoSaver.shared.saveImageToPhotos(uiImage, format: format) {  success, message in
+            
+            DispatchQueue.main.async {
+                self.isExtractingColors = false
+                self.saveMessage = message
+                self.saveSuccessful = success
+                self.showingSaveSuccess = true
+                self.parentModeManager.resetInactivityTimer()
+            }
+        }
+    }
+
     // MARK: - Enhanced Image Generation Section
     private var enhancedImageGenerationSection: some View {
         VStack(alignment: .leading, spacing: 16) {
@@ -254,7 +314,7 @@ struct ParentSongImageEditorView: View {
                     
                     Spacer()
                     
-                    ColorPalettePreview(palette: palette, size: 24)
+                    ColorPalettePreview(palette: palette)
                 }
                 
                 VStack(alignment: .leading, spacing: 4) {
@@ -314,7 +374,23 @@ struct ParentSongImageEditorView: View {
                     .cornerRadius(8)
                 }
                 .foregroundColor(.blue)
-                
+                if newImage != nil {
+                    Button(action: {
+                        saveImageToPhotos()
+                    }) {
+                        HStack {
+                            Image(systemName: "square.and.arrow.down")
+                            Text("Save Current Image to Photos")
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                                .font(.caption)
+                        }
+                        .padding()
+                        .background(.blue.opacity(0.2))
+                        .cornerRadius(8)
+                    }
+                    .foregroundColor(.blue)
+                }
                 // Reset to default
                 Button(action: {
                     resetToDefault()
@@ -472,7 +548,7 @@ struct ParentSongImageEditorView: View {
         withAnimation {
             // Update the song with new image, concept, and colors
             container.playlists[playlistIndex].songs[songIndex].customImage = newImage
-            container.playlists[playlistIndex].songs[songIndex].imageGenerationConcept = imageGenerationConcept
+            container.playlists[playlistIndex].songs[songIndex].imageGenerationConcepts = imageGenerationConcept
             container.playlists[playlistIndex].songs[songIndex].colorPalette = finalPalette
         }
         

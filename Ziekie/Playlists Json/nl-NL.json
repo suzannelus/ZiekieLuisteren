@@ -1,130 +1,144 @@
 {
-  "regionCode": "US",
-  "languageCode": "en",
+  "regionCode": "NL",
+  "languageCode": "nl",
   "playlists": [
     {
-      "name": "nursery_rhymes",
-      "localizedName": "Nursery Rhymes",
-      "imageGenerationConcept": "A cheerful nursery with colorful alphabet blocks, nursery rhyme books, and happy children singing together",
+      "name": "Tims_Tunes",
+      "localizedName": "Tim's Tunes",
+      "imageGenerationConcept": "Een gezellige Nederlandse kinderkamer met favoriete speelgoed, boeken en muziekinstrumenten",
       "songs": [
         {
-          "appleMusicID": "1537565862",
-          "title": "Row, Row, Row Your Boat",
-          "artist": "Super Simple Songs",
-          "savedImageName": "Row, Row, Row Your Boat",
-          "imageGenerationConcept": "Children rowing a colorful wooden boat on a peaceful lake with ducks, lily pads, and gentle ripples in the water"
+          "appleMusicID": "1520019802",
+          "title": "Kom Terug",
+          "artist": "Spinvis",
+          "savedImageName": "Kom Terug",
+          "imageGenerationConcept": "Een vredige Nederlandse tuin met bloemen en een pad dat naar huis leidt onder een zachte hemel"
         },
         {
-          "appleMusicID": "513899806",
-          "title": "Old MacDonald",
-          "artist": "Kidzone",
-          "savedImageName": "Old MacDonald",
-          "imageGenerationConcept": "A cheerful red barn with friendly farm animals including cows, pigs, chickens, and sheep in a sunny green meadow"
+          "appleMusicID": "1650358167",
+          "title": "Laat Me Los",
+          "artist": "S10 & BLØF",
+          "savedImageName": "Laat Me Los",
+          "imageGenerationConcept": "Een kind dat vrolijk speelt in de wind met vliegende bladeren en vrijheid uitstraalt"
         },
         {
-          "appleMusicID": "513899866",
-          "title": "Over in the Meadow",
-          "artist": "Kidzone",
-          "savedImageName": "Over in the Meadow",
-          "imageGenerationConcept": "A beautiful meadow with various baby animals like bunnies, birds, and butterflies among wildflowers and tall grass"
+          "appleMusicID": "1444323823",
+          "title": "Dikkertje Dap Titelsong",
+          "artist": "Martijn Fischer, Kenny B",
+          "savedImageName": "Dikkertje Dap Titelsong",
+          "imageGenerationConcept": "Een vrolijk Nederlands kinderprogramma decor met kleurrijke speelgoed en gelukkige kinderen"
         },
         {
-          "appleMusicID": "1409094644",
-          "title": "If You're Happy and You Know It",
-          "artist": "Big Bird, Oscar the Grouch & The Sesame Street Kids",
-          "savedImageName": "If You're Happy and You Know It",
-          "imageGenerationConcept": "Happy children clapping their hands, stomping their feet, and showing joyful expressions in a bright playground setting"
+          "appleMusicID": "1174259843",
+          "title": "Fatou Yo Senegal",
+          "artist": "Thijs Borsten",
+          "savedImageName": "Fatou Yo Senegal",
+          "imageGenerationConcept": "Afrikaanse muziekinstrumenten en kleurrijke patronen met vrolijke kinderen die dansen"
         },
         {
-          "appleMusicID": "1773439576",
-          "title": "Wheels on the Bus",
-          "artist": "Gracie's Corner",
-          "savedImageName": "Wheels on the Bus",
-          "imageGenerationConcept": "A bright yellow school bus with big round wheels driving through a friendly neighborhood with trees and houses"
+          "appleMusicID": "1487751938",
+          "title": "Laat Je Zien",
+          "artist": "Kristen Anderson-Lopez & Robert Lopez",
+          "savedImageName": "Laat Je Zien",
+          "imageGenerationConcept": "Een kind dat zelfverzekerd danst en zich laat zien met glinsterende sneeuwvlokken eromheen"
         },
         {
-          "appleMusicID": "968801611",
-          "title": "Head, Shoulders, Knees and Toes",
-          "artist": "Mr. Jon & Friends",
-          "savedImageName": "Head, Shoulders, Knees and Toes",
-          "imageGenerationConcept": "Children pointing to different body parts with clear labels and arrows showing head, shoulders, knees, and toes"
+          "appleMusicID": "714532397",
+          "title": "De Levenscyclus",
+          "artist": "B.B. Queen",
+          "savedImageName": "De Levenscyclus",
+          "imageGenerationConcept": "Afrikaanse savanne met verschillende dieren zoals olifanten, giraffen en zebra's rond een waterplek"
         },
         {
-          "appleMusicID": "1467934636",
-          "title": "Five Little Monkeys",
-          "artist": "Wheels on the Bus",
-          "savedImageName": "Five Little Monkeys",
-          "imageGenerationConcept": "Five playful monkeys jumping on a cozy bed with pillows and blankets, with one monkey falling off and bumping its head"
+          "appleMusicID": "1443045722",
+          "title": "Mijn Opa",
+          "artist": "Hetty Blok & Leen Jongewaard",
+          "savedImageName": "Mijn Opa",
+          "imageGenerationConcept": "Een lieve Nederlandse opa die met zijn kleinkinderen speelt in een gezellige huiskamer"
         },
         {
-          "appleMusicID": "1663809052",
-          "title": "Itsy Bitsy Spider",
-          "artist": "Toddler Tunes",
-          "savedImageName": "Itsy Bitsy Spider",
-          "imageGenerationConcept": "A tiny friendly spider climbing up a water spout with raindrops falling and then sunshine drying everything up"
+          "appleMusicID": "1757480157",
+          "title": "Tsjoe Tsjoe Wa",
+          "artist": "DD company",
+          "savedImageName": "Tsjoe Tsjoe Wa",
+          "imageGenerationConcept": "Een vrolijke Nederlandse trein die door het platteland rijdt met rokende schoorsteen en gelukkige passagiers"
         },
         {
-          "appleMusicID": "1438663830",
-          "title": "Mary Had a Little Lamb",
-          "artist": "Paul McCartney & Wings",
-          "savedImageName": "Mary Had a Little Lamb",
-          "imageGenerationConcept": "A young girl in a simple dress walking with a fluffy white lamb following behind her to a small schoolhouse"
-        },
-        {
-          "appleMusicID": "1537827833",
-          "title": "ABC Song",
-          "artist": "Ageeth de haan",
-          "savedImageName": "ABC Song",
-          "imageGenerationConcept": "Colorful alphabet letters floating in the air with bright primary colors and a smiling sun in the background"
+          "appleMusicID": "1450494105",
+          "title": "De Wielen van de Bus",
+          "artist": "Kinderliedjes Loulou en Lou",
+          "savedImageName": "De Wielen van de Bus",
+          "imageGenerationConcept": "Een gele Nederlandse bus met grote ronde wielen die door een vriendelijke buurt rijdt met bomen en huizen"
         }
       ]
     },
     {
-      "name": "timothys_favourites",
-      "localizedName": "Timothy's Favourites",
-      "imageGenerationConcept": "A cozy reading corner with favorite books, soft cushions, and musical instruments for a special collection of beloved songs",
+      "name": "kinderliedjes",
+      "localizedName": "Kinderliedjes",
+      "imageGenerationConcept": "Een vrolijke Nederlandse kleuterschool met kleurrijke speelgoed, Nederlandse vlaggen en zingende kinderen",
       "songs": [
         {
-          "appleMusicID": "1537565862",
-          "title": "Row, Row, Row Your Boat",
-          "artist": "Super Simple Songs",
-          "savedImageName": "Row, Row, Row Your Boat",
-          "imageGenerationConcept": "Children rowing a colorful wooden boat on a peaceful lake with ducks, lily pads, and gentle ripples in the water"
+          "appleMusicID": "1487823773",
+          "title": "In de Manenschijn",
+          "artist": "Ageeth de Haan",
+          "savedImageName": "In de Manenschijn",
+          "imageGenerationConcept": "Een zachte Nederlandse nacht met volle maan die schijnt over een vredig dorp met kanalen en windmolens"
         },
         {
-          "appleMusicID": "1707252567",
-          "title": "Little Blue",
-          "artist": "Jacob Collier",
-          "savedImageName": "Little Blue",
-          "imageGenerationConcept": "A gentle blue bird sitting on a branch with soft blue clouds and peaceful sky in various shades of blue"
+          "appleMusicID": "1182333582",
+          "title": "Zo Gaat de Molen",
+          "artist": "Juf roos",
+          "savedImageName": "Zo Gaat de Molen",
+          "imageGenerationConcept": "Een traditionele Nederlandse windmolen met draaiende wieken in een groen polderlandschap met tulpen"
         },
         {
-          "appleMusicID": "1440618183",
-          "title": "Do You Want to Build a Snowman",
-          "artist": "Kristen Bell, Agatha Lee Monn & Katie Lopez",
-          "savedImageName": "Do You Want to Build a Snowman",
-          "imageGenerationConcept": "Children building a friendly snowman with carrot nose, button eyes, and stick arms in a snowy yard with snowflakes falling"
+          "appleMusicID": "1106898560",
+          "title": "Drie Kleine Kleutertjes",
+          "artist": "Belle En De Kinderliedjes Band",
+          "savedImageName": "Drie Kleine Kleutertjes",
+          "imageGenerationConcept": "Drie vrolijke peuters die samen spelen op een Nederlandse speelplaats met glijbaan en schommels"
         },
         {
-          "appleMusicID": "1802699332",
-          "title": "Heigh-Ho",
-          "artist": "Jeremy Swift, George Salazar, Jason Kravits, Tituss Burgess, Martin Klebba & Andy Grotelueschen",
-          "savedImageName": "Heigh-Ho",
-          "imageGenerationConcept": "Happy workers marching with tools and pickaxes, whistling and singing while walking through a mountain path"
+          "appleMusicID": "1495846911",
+          "title": "Ik Ben Toch Zeker Sinterklaas Niet",
+          "artist": "Kinderen Voor Kinderen",
+          "savedImageName": "Ik Ben Toch Zeker Sinterklaas Niet",
+          "imageGenerationConcept": "Een Nederlandse Sinterklaas viering met pepernoten, pakjes en kinderen in traditionale Nederlandse kleding"
         },
         {
-          "appleMusicID": "1472083275",
-          "title": "Circle of Life",
-          "artist": "Lindiwe Mkhize & Lebo M",
-          "savedImageName": "Circle of Life",
-          "imageGenerationConcept": "African savanna with various animals like elephants, giraffes, and zebras gathered around a watering hole under a bright sun"
+          "appleMusicID": "1565827427",
+          "title": "Zeg Ken Jij de Mosselman",
+          "artist": "Kinderliedjes, Kinderliedjes voor Kinderen & Nederlandse Kinderliedjes",
+          "savedImageName": "Zeg Ken Jij de Mosselman",
+          "imageGenerationConcept": "Nederlandse haven met mosselen, vissersboten en een vrolijke visverkopers op de markt"
         },
         {
-          "appleMusicID": "1436768987",
-          "title": "Timothy",
-          "artist": "Little dragon",
-          "savedImageName": "Timothy",
-          "imageGenerationConcept": "A small friendly dragon with colorful scales playing happily in a magical forest with flowers and butterflies"
+          "appleMusicID": "1565827424",
+          "title": "Klap Eens in Je Handjes",
+          "artist": "Kinderliedjes, Kinderliedjes voor Kinderen & Nederlandse Kinderliedjes",
+          "savedImageName": "Klap Eens in Je Handjes",
+          "imageGenerationConcept": "Nederlandse kinderen die vrolijk in hun handjes klappen met muzieknoten en vrolijke gezichten"
+        },
+        {
+          "appleMusicID": "1625903276",
+          "title": "Zevensprong",
+          "artist": "Sesamstraat & Tommie",
+          "savedImageName": "Zevensprong",
+          "imageGenerationConcept": "Kinderen die de traditionele Nederlandse zevensprong dans doen in een cirkel op het schoolplein"
+        },
+        {
+          "appleMusicID": "1512219934",
+          "title": "Ze Kunnen Zeggen Wat Ze Willen",
+          "artist": "Kinderliedjes Om Mee Te Zingen",
+          "savedImageName": "Ze Kunnen Zeggen Wat Ze Willen",
+          "imageGenerationConcept": "Zelfverzekerde Nederlandse kinderen die trots staan met opgeheven hoofden en vrolijke uitdrukkingen"
+        },
+        {
+          "appleMusicID": "1581562679",
+          "title": "Helicopter",
+          "artist": "Sesamstraat, Tommie, Ieniemienie & Pino",
+          "savedImageName": "Helicopter",
+          "imageGenerationConcept": "Een kleurrijke helicopter die vliegt boven het Nederlandse landschap met kinderen die zwaaien vanaf de grond"
         }
       ]
     }

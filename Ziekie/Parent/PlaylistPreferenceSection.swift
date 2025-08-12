@@ -15,7 +15,7 @@ struct PlaylistPreferenceSection: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            Text("Music Selection")
+            Text("Default Playlist Selection")
                 .font(.headline)
                 .foregroundColor(.white)
             
@@ -86,4 +86,8 @@ struct PreferenceRow: View {
         }
         .buttonStyle(PlainButtonStyle())
     }
+}
+
+#Preview {
+    PlaylistPreferenceSection()
 }

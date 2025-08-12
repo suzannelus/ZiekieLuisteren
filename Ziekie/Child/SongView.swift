@@ -6,300 +6,232 @@ struct SongView: View {
     let initialSongID: String
     
     @StateObject private var playerManager = MusicPlayerManager.shared
+    @StateObject private var container = PlaylistsContainer.shared
     @Environment(\.dismiss) private var dismiss
-    @State private var currentCardIndex: Int = 0
-    @State private var dragOffset: CGSize = .zero
     @State private var isAnimating = false
+    @State private var showPlayButton = true
     
-    private var songs: [MusicItem] {
-        playlist.songs
+    // Get current song with live updates
+    private var currentSong: MusicItem? {
+        guard let currentPlaylist = container.playlists.first(where: { $0.id == playlist.id }),
+              let song = currentPlaylist.songs.first(where: { $0.songID == playerManager.currentlyPlayingSongID ?? initialSongID }) else {
+            return playlist.songs.first { $0.songID == initialSongID }
+        }
+        return song
     }
     
-    private var currentSongIndex: Int {
-        songs.firstIndex { $0.songID == initialSongID } ?? 0
+    // Use song's colors if available, otherwise playlist's colors
+    private var effectiveColorPalette: ColorPalette {
+        currentSong?.colorPalette ?? playlist.effectivePalette
     }
     
     var body: some View {
-        GeometryReader { geometry in
-            ZStack {
-                // Background
-                LinearGradient(
-                    colors: [Color("Background1"), Color("Background2")],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
+        ZStack {
+            Color.white
                 .ignoresSafeArea()
+            VStack {
+                RainbowText(text: playlist.name, font: .largeTitle)
+                    .lineLimit(1)
                 
-                VStack(spacing: 0) {
-                    // Navigation Header
-                    HStack {
-                        Button(action: { dismiss() }) {
-                            HStack {
-                                Image(systemName: "chevron.left")
-                                Text("Back")
-                            }
-                            .foregroundColor(.accentColor)
-                        }
-                        
-                        Spacer()
-                        
-                        Text(playlist.name)
-                            .font(.headline)
-                            .foregroundColor(.primary)
-                        
-                        Spacer()
-                        
-                        // Invisible spacer to center the title
-                        Button(action: {}) {
-                            HStack {
-                                Image(systemName: "chevron.left")
-                                Text("Back")
-                            }
-                        }
-                        .opacity(0)
-                    }
-                    .padding()
+                
+                
+                Spacer()
+                ZStack {
                     
-                    Spacer()
-                    
-                    // Card Stack
-                    ZStack {
-                        // Previous Card (-1)
-                        if let previousSong = playerManager.getPreviousSong() {
-                            SongCard(
-                                song: previousSong,
-                                size: .small,
-                                position: .leading
-                            )
-                            .offset(x: -120 + dragOffset.width * 0.3)
-                            .scaleEffect(0.8)
-                            .opacity(0.6)
-                        }
-                        
-                        // Current Card (0)
-                        if let currentSong = playerManager.getCurrentSong() {
-                            SongCard(
-                                song: currentSong,
-                                size: .large,
-                                position: .center
-                            )
-                            .offset(x: dragOffset.width * 0.8)
-                            .scaleEffect(1.0 - abs(dragOffset.width) / 1000)
-                            .opacity(1.0 - abs(dragOffset.width) / 400.0)
-                        }
-                        
-                        // Next Card (+1)
-                        if let nextSong = playerManager.getNextSong() {
-                            SongCard(
-                                song: nextSong,
-                                size: .small,
-                                position: .trailing
-                            )
-                            .offset(x: 120 + dragOffset.width * 0.3)
-                            .scaleEffect(0.8)
-                            .opacity(0.6)
-                        }
-                    }
-                    .frame(height: 400)
-                    .gesture(
-                        DragGesture()
-                            .onChanged { value in
-                                guard !isAnimating else { return }
-                                dragOffset = value.translation
-                            }
-                            .onEnded { value in
-                                guard !isAnimating else { return }
-                                
-                                let threshold: CGFloat = 100
-                                
-                                if value.translation.width > threshold {
-                                    // Swipe right - go to previous
-                                    swipeToPrevious()
-                                } else if value.translation.width < -threshold {
-                                    // Swipe left - go to next
-                                    swipeToNext()
-                                } else {
-                                    // Snap back to center
-                                    withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
-                                        dragOffset = .zero
-                                    }
-                                }
-                            }
-                    )
-                    
-                    Spacer()
-                    
-                    // Progress Bar
-                    VStack(spacing: 12) {
-                        HStack {
-                            Text(formatTime(playerManager.currentProgress * playerManager.currentDuration))
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                            
-                            Spacer()
-                            
-                            Text(formatTime(playerManager.currentDuration))
-                                .font(.caption)
-                                .foregroundColor(.secondary)
-                        }
-                        
-                        ProgressView(value: playerManager.currentProgress)
-                            .progressViewStyle(LinearProgressViewStyle(tint: .accentColor))
-                            .scaleEffect(y: 2.0)
-                    }
-                    .padding(.horizontal, 40)
-                    .padding(.bottom, 40)
-                }
-            }
-        }
-        .navigationBarHidden(true)
-        .onAppear {
-            // Start playing the initial song
-            Task {
-                await playerManager.playSong(with: initialSongID, in: playlist)
-            }
-        }
-    }
-    
-    private func swipeToPrevious() {
-        guard playerManager.getPreviousSong() != nil else {
-            // Snap back if no previous song
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
-                dragOffset = .zero
-            }
-            return
-        }
-        
-        isAnimating = true
-        
-        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-            dragOffset = CGSize(width: 400, height: 0)
-        }
-        
-        Task {
-            await playerManager.playPrevious()
-            
-            // Reset animation after a delay
-            try? await Task.sleep(nanoseconds: 300_000_000)
-            await MainActor.run {
-                withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
-                    dragOffset = .zero
-                }
-                isAnimating = false
-            }
-        }
-    }
-    
-    private func swipeToNext() {
-        guard playerManager.getNextSong() != nil else {
-            // Snap back if no next song
-            withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
-                dragOffset = .zero
-            }
-            return
-        }
-        
-        isAnimating = true
-        
-        withAnimation(.spring(response: 0.6, dampingFraction: 0.8)) {
-            dragOffset = CGSize(width: -400, height: 0)
-        }
-        
-        Task {
-            await playerManager.playNext()
-            
-            // Reset animation after a delay
-            try? await Task.sleep(nanoseconds: 300_000_000)
-            await MainActor.run {
-                withAnimation(.spring(response: 0.5, dampingFraction: 0.7)) {
-                    dragOffset = .zero
-                }
-                isAnimating = false
-            }
-        }
-    }
-    
-    private func formatTime(_ seconds: TimeInterval) -> String {
-        let minutes = Int(seconds) / 60
-        let seconds = Int(seconds) % 60
-        return String(format: "%d:%02d", minutes, seconds)
-    }
-}
-
-// MARK: - Song Card Component
-struct SongCard: View {
-    let song: MusicItem
-    let size: CardSize
-    let position: CardPosition
-    
-    enum CardSize {
-        case small, large
-    }
-    
-    enum CardPosition {
-        case leading, center, trailing
-    }
-    
-    var body: some View {
-        VStack(spacing: 16) {
-            // Song Image
-            Group {
-                if let customImage = song.customImage {
-                    customImage
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                } else if let artworkURL = song.artworkURL {
-                    AsyncImage(url: artworkURL) { phase in
-                        switch phase {
-                        case .empty:
-                            ProgressView()
-                        case .success(let image):
-                            image
+                    Group {
+                        if let song = currentSong {
+                            song.displayImage
                                 .resizable()
                                 .aspectRatio(contentMode: .fit)
-                        case .failure(_):
-                            Image(systemName: "music.note.list")
-                                .font(.system(size: 60))
-                                .foregroundStyle(.secondary)
-                        @unknown default:
-                            Image(systemName: "music.note.list")
-                                .font(.system(size: 60))
-                                .foregroundStyle(.secondary)
+                        } else {
+                            Image("Row, Row, Row, Your Boat")
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                            
                         }
                     }
-                } else {
-                    Image(systemName: "music.note.list")
-                        .font(.system(size: 60))
-                        .foregroundStyle(.secondary)
+                    .padding(80)
+                    .clipShape(RoundedRectangle(cornerRadius: 14))
+                    .shadow(
+                        color: effectiveColorPalette.primaryColor.opacity(0.9),
+                        radius: 20,
+                        x: 0,
+                        y: 8
+                    )
+                    
+                    
+                    
+                }
+                
+                
+                Spacer()
+                // Song Title
+                Text(currentSong?.title ?? "No Song")
+                    .bodyLarge()
+                    .padding()
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.black)
+                    .lineLimit(2)
+                
+                // Control Buttons - Large and Child-Friendly
+                HStack(spacing: 60) {
+                    // Previous Button
+                    Button(action: previousSong) {
+                        Image(systemName: "backward.fill")
+                            .font(.system(size: 32, weight: .semibold))
+                            .foregroundColor(effectiveColorPalette.textColor)
+                            .frame(width: 70, height: 70)
+                            .background(
+                                Circle()
+                                    .fill(effectiveColorPalette.backgroundColor.opacity(0.8))
+                                    .overlay(
+                                        Circle()
+                                            .stroke(effectiveColorPalette.primaryColor, lineWidth: 2)
+                                    )
+                            )
+                            .shadow(
+                                color: effectiveColorPalette.primaryColor.opacity(0.3),
+                                radius: 8,
+                                x: 0,
+                                y: 4
+                            )
+                    }
+                    .scaleEffect(isAnimating ? 0.95 : 1.0)
+                    
+                    // Main Play/Pause Button - Extra Large
+                    Button(action: playPauseAction) {
+                        Image(systemName: playerManager.isPlaying ? "pause.circle.fill" : "play.circle.fill")
+                            .font(.system(size: 80, weight: .medium))
+                            .foregroundColor(effectiveColorPalette.accentColor)
+                            .background(
+                                Circle()
+                                    .fill(effectiveColorPalette.backgroundColor)
+                                    .frame(width: 90, height: 90)
+                            )
+                            .shadow(
+                                color: effectiveColorPalette.accentColor.opacity(0.4),
+                                radius: 12,
+                                x: 0,
+                                y: 6
+                            )
+                    }
+                    .scaleEffect(playerManager.isPlaying ? 1.05 : 1.0)
+                    .animation(.easeInOut(duration: 0.2), value: playerManager.isPlaying)
+                    
+                    // Next Button
+                    Button(action: nextSong) {
+                        Image(systemName: "forward.fill")
+                            .font(.system(size: 32, weight: .semibold))
+                            .foregroundColor(effectiveColorPalette.textColor)
+                            .frame(width: 70, height: 70)
+                            .background(
+                                Circle()
+                                    .fill(effectiveColorPalette.backgroundColor.opacity(0.8))
+                                    .overlay(
+                                        Circle()
+                                            .stroke(effectiveColorPalette.primaryColor, lineWidth: 3)
+                                    )
+                            )
+                            .shadow(
+                                color: effectiveColorPalette.primaryColor.opacity(0.3),
+                                radius: 8,
+                                x: 0,
+                                y: 4
+                            )
+                    }
+                    .scaleEffect(isAnimating ? 0.95 : 1.0)
+                }
+                .padding(.horizontal, 40)
+                
+            }
+            .padding(.horizontal, 20)
+            
+            
+            
+            
+            
+            .navigationBarHidden(false)
+            .onAppear {
+                // Start the background animation
+                withAnimation {
+                    isAnimating = true
+                }
+                
+                // Start playing the initial song
+                Task {
+                    await playerManager.playSong(with: initialSongID, in: playlist)
+                }
+                
+                // Hide play button overlay after 3 seconds
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    withAnimation {
+                        showPlayButton = false
+                    }
                 }
             }
-            .frame(width: cardWidth, height: cardWidth)
-            .cornerRadius(16)
-            .shadow(color: .black.opacity(0.2), radius: 8, x: 0, y: 4)
-            
-            // Song Title (only for large card)
-            if size == .large {
-                Text(song.title)
-                    .font(.title2)
-                    .fontWeight(.semibold)
-                    .multilineTextAlignment(.center)
-                    .lineLimit(2)
-                    .foregroundColor(.primary)
+            .onChange(of: playerManager.currentlyPlayingSongID) { _, _ in
+                // Animate color changes when song changes
+                withAnimation(.easeInOut(duration: 0.8)) {
+                    // Colors will update through effectiveColorPalette
+                }
             }
         }
     }
     
-    private var cardWidth: CGFloat {
-        switch size {
-        case .small: return 120
-        case .large: return 280
+    
+    // MARK: - Actions
+    
+    private func playPauseAction() {
+        Task {
+            await playerManager.togglePlayback()
+        }
+        
+        // Button feedback animation
+        withAnimation(.easeInOut(duration: 0.15)) {
+            isAnimating.toggle()
         }
     }
+    
+    private func previousSong() {
+        Task {
+            await playerManager.playPrevious()
+        }
+        
+        // Button feedback
+        withAnimation(.easeInOut(duration: 0.15)) {
+            isAnimating.toggle()
+        }
+    }
+    
+    private func nextSong() {
+        Task {
+            await playerManager.playNext()
+        }
+        
+        // Button feedback
+        withAnimation(.easeInOut(duration: 0.15)) {
+            isAnimating.toggle()
+        }
+    }
+    
 }
 
 #Preview {
-    SongView(
-        playlist: Playlist(name: "Test Playlist", songs: []),
-        initialSongID: "test"
+    let sampleSong = MusicItem(
+        songID: "1537827841&l",
+        title: "Row Row Row your boat",
+        artworkURL: nil,
+        customImage: Image("Row, Row, Row Your Boat"),
+        imageGenerationConcepts: "Colorful stars in the night sky"
     )
+    
+    let samplePlaylist = Playlist(
+        name: "Nursery Rhymes",
+        songs: [sampleSong]
+    )
+    
+    SongView(playlist: samplePlaylist, initialSongID: "test123")
 }
+
+
+
