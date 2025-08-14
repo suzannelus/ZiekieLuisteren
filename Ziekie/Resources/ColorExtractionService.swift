@@ -95,7 +95,7 @@ class ColorExtractionService: ObservableObject {
             }
         }
         
-        // Fallback to first color or system blue
+        // Fallback to first color or system teal
         return colors.first ?? UIColor.systemTeal
     }
     
@@ -447,7 +447,18 @@ extension UIColor {
     }
 }
 
+
 #Preview {
-    Text("Color Extraction Service Ready!")
-        .foregroundColor(.blue)
+    VStack {
+        
+        Rectangle()
+            .fill(.primary)
+        Rectangle()
+            .fill(.secondary)
+        Rectangle()
+            .fill(.accent)
+        Rectangle()
+            .fill(.text)
+    }
+    
 }

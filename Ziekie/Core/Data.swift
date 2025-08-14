@@ -9,9 +9,6 @@ import Foundation
 import SwiftUI
 
 
-
-// MARK: - NEW: Color Palette Support (ADD THIS SECTION)
-
 /// Represents a color palette extracted from an image
 struct ColorPalette: Codable, Hashable {
     let primary: CodableColor      // Main dominant color
@@ -56,7 +53,7 @@ struct ColorPalette: Codable, Hashable {
     
     // FIXED: Default palette using Color initializer
     static let `default` = ColorPalette(
-        primary: .blue,
+        primary: .teal,
         secondary: .mint,
         accent: .purple,
         background: .white,

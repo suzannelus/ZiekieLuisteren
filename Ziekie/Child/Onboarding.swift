@@ -6,6 +6,8 @@
 
 import SwiftUI
 import MusicKit
+import Speech
+
 
 struct WelcomeView: View {
     @StateObject private var authManager = MusicAuthManager.shared
@@ -82,10 +84,12 @@ struct WelcomeView: View {
             switch currentStep {
             case .intro:
                 introStepView
-            case .subscriptionCheck:
-                subscriptionCheckStepView
             case .customArtPreview:
                 customArtPreviewStepView
+            case .subscriptionCheck:
+                subscriptionCheckStepView
+            case .imagePlaygroundSetup:
+                imagePlaygroundSetupStepView
             case .readyToUse:
                 readyToUseStepView
             }
@@ -101,11 +105,20 @@ struct WelcomeView: View {
             
             // Floating glass music notes for visual appeal
             floatingMusicNotes
+            VStack {
+                Spacer()
+                Button {
+                    proceedToSubscriptionCheck()
+                } label: {
+                    Text("Proceed")
+                }
+            }
+                
         }
-        .onTapGesture {
-            proceedToSubscriptionCheck()
-        }
+        
     }
+    
+    
     
     // MARK: - Subscription Check Step
     private var subscriptionCheckStepView: some View {
@@ -139,6 +152,32 @@ struct WelcomeView: View {
             
             // Floating music notes with custom art theme
             floatingMusicNotes
+        }
+    }
+    
+    private var imagePlaygroundSetupStepView: some View {
+        VStack(spacing: 20) {
+            // Icon and title
+            VStack(spacing: 16) {
+                Image(systemName: "photo.on.rectangle.angled")
+                    .font(.system(size: 60))
+                    .foregroundColor(.blue)
+                
+                Text("Image Playground Setup")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(.primary)
+                
+                Text("For the best custom artwork experience, let's check your device settings")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
+            }
+            
+            // Embed the compact language checker
+            ImagePlaygroundLanguageWarning()
+                .padding(.horizontal, 16)
         }
     }
     
@@ -225,7 +264,7 @@ struct WelcomeView: View {
         VStack(spacing: 16) {
             switch currentStep {
             case .intro:
-                VStack(spacing: 8) {
+                VStack(spacing: 12) {
                     Text("Add custom images to playlists and songs")
                         .font(.title3)
                         .fontWeight(.medium)
@@ -233,19 +272,34 @@ struct WelcomeView: View {
                         .multilineTextAlignment(.center)
                         .padding(.horizontal, 32)
                     
-                    Text("Tap anywhere to continue")
-                        .font(.caption)
-                        .foregroundColor(.secondary)
+                    Button("Get Started") {
+                        proceedToCustomArtPreview()
+                    }
+                    .buttonStyle(PrimaryButtonStyle())
                 }
+                
+            case .customArtPreview:
+                Button("Continue") {
+                    proceedToSubscriptionCheck()
+                }
+                .buttonStyle(PrimaryButtonStyle())
                 
             case .subscriptionCheck:
                 subscriptionActionButtons
                 
-            case .customArtPreview:
-                Button("Continue") {
-                    proceedToFinalStep()
+            case .imagePlaygroundSetup:
+                VStack(spacing: 12) {
+                    Button("Continue") {
+                        proceedToFinalStep()
+                    }
+                    .buttonStyle(PrimaryButtonStyle())
+                    
+                    Text("You can always change these settings later in the iOS Settings app")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 16)
                 }
-                .buttonStyle(PrimaryButtonStyle())
                 
             case .readyToUse:
                 Button("Start Using Tune Gallery") {
@@ -255,21 +309,18 @@ struct WelcomeView: View {
             }
         }
     }
-    
+
     // MARK: - Subscription Action Buttons
     private var subscriptionActionButtons: some View {
         VStack(spacing: 12) {
             if authManager.isCheckingSubscription {
-                // Show nothing while checking
                 EmptyView()
             } else if authManager.canPlayMusic {
-                // User has subscription - proceed to custom art preview
                 Button("Continue") {
-                    proceedToCustomArtPreview()
+                    proceedToImagePlaygroundSetup()
                 }
                 .buttonStyle(PrimaryButtonStyle())
             } else if authManager.shouldOfferSubscription {
-                // User can subscribe - show subscription offer
                 VStack(spacing: 8) {
                     Button("Subscribe to Apple Music") {
                         authManager.showSubscriptionOffer()
@@ -277,7 +328,7 @@ struct WelcomeView: View {
                     .buttonStyle(PrimaryButtonStyle())
                     
                     Button("Continue without subscription") {
-                        proceedToCustomArtPreview()
+                        proceedToImagePlaygroundSetup()
                     }
                     .buttonStyle(SecondaryButtonStyle())
                     
@@ -288,10 +339,9 @@ struct WelcomeView: View {
                         .padding(.horizontal, 16)
                 }
             } else {
-                // Restricted access - continue with limited functionality
                 VStack(spacing: 8) {
                     Button("Continue") {
-                        proceedToCustomArtPreview()
+                        proceedToImagePlaygroundSetup()
                     }
                     .buttonStyle(PrimaryButtonStyle())
                     
@@ -302,6 +352,12 @@ struct WelcomeView: View {
                         .padding(.horizontal, 16)
                 }
             }
+        }
+    }
+    
+    private func proceedToImagePlaygroundSetup() {
+        withAnimation(.easeInOut(duration: 0.4)) {
+            currentStep = .imagePlaygroundSetup
         }
     }
     
@@ -338,10 +394,11 @@ struct WelcomeView: View {
 
 // MARK: - Onboarding Steps
 enum OnboardingStep {
-    case intro                 // Show manenschijn image with tap to continue
-    case subscriptionCheck     // Check and display subscription status
-    case customArtPreview      // Show custom art transition
-    case readyToUse           // Final confirmation screen
+    case intro                    // Show maneschijn image with button to continue
+    case customArtPreview        // Show custom art transition
+    case subscriptionCheck       // Check and display subscription status
+    case imagePlaygroundSetup    // Image Playground language setup
+    case readyToUse             // Final confirmation screen
 }
 
 // MARK: - Custom Art Transition View
@@ -541,5 +598,344 @@ struct PolaroidCard: View {
         }
         .rotationEffect(.degrees(-10))
         .padding()
+    }
+}
+
+
+
+
+// MARK: - WelcomeView Previews
+#Preview("Welcome - Intro Step") {
+    WelcomeView()
+        .preferredColorScheme(.dark)
+        .previewDisplayName("Intro Step")
+}
+
+#Preview("Welcome - Light Mode") {
+    WelcomeView()
+        .preferredColorScheme(.light)
+        .previewDisplayName("Light Mode")
+}
+
+#Preview("Welcome - Subscription Check") {
+    WelcomeViewPreview(initialStep: .subscriptionCheck)
+        .preferredColorScheme(.dark)
+        .previewDisplayName("Subscription Check")
+}
+
+#Preview("Welcome - Image Playground Setup") {
+    WelcomeViewPreview(initialStep: .imagePlaygroundSetup)
+        .preferredColorScheme(.dark)
+        .previewDisplayName("Image Playground Setup")
+}
+
+#Preview("Welcome - Ready to Use") {
+    WelcomeViewPreview(initialStep: .readyToUse)
+        .preferredColorScheme(.dark)
+        .previewDisplayName("Ready to Use")
+}
+
+// MARK: - Preview Helper for Different States
+struct WelcomeViewPreview: View {
+    let initialStep: OnboardingStep
+    
+    var body: some View {
+        WelcomeViewContent(initialStep: initialStep)
+    }
+}
+
+// MARK: - WelcomeView Content for Previews
+struct WelcomeViewContent: View {
+    @State private var currentStep: OnboardingStep
+    @State private var showingSubscriptionOffer = false
+    @State private var floatPhase: CGFloat = 0
+    @State private var contentOpacity: Double = 1
+    @State private var isTransitioning = false
+    
+    init(initialStep: OnboardingStep = .intro) {
+        self._currentStep = State(initialValue: initialStep)
+    }
+    
+    var body: some View {
+        ZStack {
+            // Beautiful gradient background with orbs
+            backgroundView
+            
+            // Main content that changes based on current step
+            VStack(spacing: 0) {
+                Spacer()
+                
+                // Dynamic content based on onboarding step
+                mainContentView
+                    .opacity(contentOpacity)
+                    .animation(.easeInOut(duration: 0.4), value: contentOpacity)
+                
+                Spacer()
+                
+                // Bottom action area
+                bottomActionView
+                    .padding(.bottom, 60)
+            }
+        }
+        .onAppear {
+            startFloatingAnimation()
+        }
+    }
+    
+    // MARK: - Background View
+    private var backgroundView: some View {
+        ZStack {
+            // Gradient orbs that create depth and visual interest
+            GradientOrb(gradient: .tealMint, size: 220, blur: 28)
+                .offset(x: -120, y: -190)
+                .opacity(0.85)
+            
+            GradientOrb(gradient: .bluePurple, size: 260, blur: 30)
+                .offset(x: 120, y: -40)
+                .opacity(0.9)
+            
+            GradientOrb(gradient: .orangePink, size: 230, blur: 30)
+                .offset(x: 40, y: 200)
+                .opacity(0.9)
+        }
+    }
+    
+    // MARK: - Main Content View
+    private var mainContentView: some View {
+        ZStack {
+            switch currentStep {
+            case .intro:
+                introStepView
+            case .customArtPreview:
+                customArtPreviewStepView
+            case .subscriptionCheck:
+                subscriptionCheckStepView
+            case .imagePlaygroundSetup:
+                imagePlaygroundSetupStepView
+            case .readyToUse:
+                readyToUseStepView
+            }
+        }
+    }
+    
+    // MARK: - Intro Step
+    private var introStepView: some View {
+        ZStack {
+            // The polaroid card with maneschijn image
+            PolaroidCard()
+                .padding()
+            
+            // Floating glass music notes for visual appeal
+            floatingMusicNotes
+        }
+    }
+    
+    // MARK: - Subscription Check Step
+    private var subscriptionCheckStepView: some View {
+        VStack(spacing: 24) {
+            // Mock subscription status icon
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 60))
+                .foregroundColor(.green)
+            
+            // Subscription status text
+            Text("Apple Music Subscription Active")
+                .font(.title2)
+                .fontWeight(.medium)
+                .foregroundColor(.primary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
+            
+            // Additional context
+            Text("Perfect! You can enjoy full Apple Music playback with your custom artwork.")
+                .font(.body)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
+        }
+    }
+    
+    // MARK: - Custom Art Preview Step
+    private var customArtPreviewStepView: some View {
+        ZStack {
+            // Show the transition from default to custom art
+            CustomArtTransitionView()
+                .padding()
+            
+            // Floating music notes with custom art theme
+            floatingMusicNotes
+        }
+    }
+    
+    // MARK: - Image Playground Setup Step
+    private var imagePlaygroundSetupStepView: some View {
+        VStack(spacing: 20) {
+            // Icon and title
+            VStack(spacing: 16) {
+                Image(systemName: "photo.on.rectangle.angled")
+                    .font(.system(size: 60))
+                    .foregroundColor(.blue)
+                
+                Text("Image Playground Setup")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .foregroundColor(.primary)
+                
+                Text("For the best custom artwork experience, let's check your device settings")
+                    .font(.body)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
+            }
+            
+            // Mock language warning for preview
+            VStack(spacing: 12) {
+                HStack(spacing: 8) {
+                    Image(systemName: "checkmark.circle.fill")
+                        .foregroundColor(.green)
+                    
+                    Text("Image Playground is ready to use!")
+                        .font(.subheadline)
+                        .fontWeight(.medium)
+                    
+                    Spacer()
+                }
+                
+                Text("Your device language and Siri language are properly configured.")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            .padding()
+            .background(Color.green.opacity(0.1))
+            .cornerRadius(8)
+            .padding(.horizontal, 16)
+        }
+    }
+    
+    // MARK: - Ready to Use Step
+    private var readyToUseStepView: some View {
+        VStack(spacing: 24) {
+            Image(systemName: "checkmark.circle.fill")
+                .font(.system(size: 80))
+                .foregroundColor(.green)
+            
+            Text("You're all set!")
+                .font(.title)
+                .fontWeight(.bold)
+                .foregroundColor(.primary)
+            
+            Text("Start creating beautiful playlists with custom artwork")
+                .font(.body)
+                .foregroundColor(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 32)
+        }
+    }
+    
+    // MARK: - Floating Music Notes
+    private var floatingMusicNotes: some View {
+        Group {
+            GlassMusicNote(symbol: "music.note", size: 64, rotation: .degrees(0))
+                .offset(x: -120, y: -80)
+                .opacity(0.95)
+                .scaleEffect(1.0 + 0.02 * sin(floatPhase))
+            
+            GlassMusicNote(symbol: "music.note", size: 70, rotation: .degrees(14))
+                .offset(x: 140, y: -30)
+                .opacity(0.95)
+                .scaleEffect(1.0 + 0.02 * cos(floatPhase * 1.3))
+            
+            GlassMusicNote(symbol: "music.note", size: 54, rotation: .degrees(-8))
+                .offset(x: -40, y: 160)
+                .opacity(0.9)
+                .scaleEffect(1.0 + 0.02 * sin(floatPhase * 0.9))
+        }
+    }
+    
+    // MARK: - Bottom Action View
+    private var bottomActionView: some View {
+        VStack(spacing: 16) {
+            switch currentStep {
+            case .intro:
+                VStack(spacing: 12) {
+                    Text("Add custom images to playlists and songs")
+                        .font(.title3)
+                        .fontWeight(.medium)
+                        .foregroundColor(.accentColor)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 32)
+                    
+                    Button("Get Started") {
+                        proceedToCustomArtPreview()
+                    }
+                    .buttonStyle(PrimaryButtonStyle())
+                }
+                
+            case .customArtPreview:
+                Button("Continue") {
+                    proceedToSubscriptionCheck()
+                }
+                .buttonStyle(PrimaryButtonStyle())
+                
+            case .subscriptionCheck:
+                Button("Continue") {
+                    proceedToImagePlaygroundSetup()
+                }
+                .buttonStyle(PrimaryButtonStyle())
+                
+            case .imagePlaygroundSetup:
+                VStack(spacing: 12) {
+                    Button("Continue") {
+                        proceedToFinalStep()
+                    }
+                    .buttonStyle(PrimaryButtonStyle())
+                    
+                    Text("You can always change these settings later in the iOS Settings app")
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 16)
+                }
+                
+            case .readyToUse:
+                Button("Start Using Tune Gallery") {
+                    // In preview, just reset to intro
+                    currentStep = .intro
+                }
+                .buttonStyle(PrimaryButtonStyle())
+            }
+        }
+    }
+    
+    // MARK: - Helper Methods
+    private func startFloatingAnimation() {
+        withAnimation(.easeInOut(duration: 4).repeatForever(autoreverses: true)) {
+            floatPhase = .pi * 2
+        }
+    }
+    
+    private func proceedToCustomArtPreview() {
+        withAnimation(.easeInOut(duration: 0.4)) {
+            currentStep = .customArtPreview
+        }
+    }
+    
+    private func proceedToSubscriptionCheck() {
+        withAnimation(.easeInOut(duration: 0.4)) {
+            currentStep = .subscriptionCheck
+        }
+    }
+    
+    private func proceedToImagePlaygroundSetup() {
+        withAnimation(.easeInOut(duration: 0.4)) {
+            currentStep = .imagePlaygroundSetup
+        }
+    }
+    
+    private func proceedToFinalStep() {
+        withAnimation(.easeInOut(duration: 0.4)) {
+            currentStep = .readyToUse
+        }
     }
 }

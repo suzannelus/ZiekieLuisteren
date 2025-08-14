@@ -20,42 +20,47 @@ struct PlaylistDetailView: View {
         ]
     
     var body: some View {
-        NavigationView {
-            
-            ScrollView {
+       
+
+            NavigationView {
+                ZStack {
+                    FloatingClouds(colorPalette: playlist!.effectivePalette)
                 
-                //   .offset(y: getOffsetForHeader())
-                VStack(spacing: 0) {
-                    if let playlist = playlist {
-                        VStack(alignment: .leading, spacing: 20) {
-                            // Header with playlist image and info
-                            playlistHeader(playlist)
-                            
-                            
-                            ScrollView {
-                                // Songs list
+                ScrollView {
+                    
+                    //   .offset(y: getOffsetForHeader())
+                    VStack(spacing: 0) {
+                        if let playlist = playlist {
+                            VStack(alignment: .leading, spacing: 20) {
+                                // Header with playlist image and info
+                                playlistHeader(playlist)
                                 
-                                LazyVGrid(columns: adaptiveColumn, spacing: 8) {
-                                    ForEach(playlist.songs, id: \.id) { song in
-                                        // UPDATED: Pass playlist context to SongRow
-                                        SongRow(musicItems: song, playlist: playlist)
-                                            .id("\(song.id)-\(song.customImage != nil)-\(playlist.id)")
+                                
+                                ScrollView {
+                                    // Songs list
+                                    
+                                    LazyVGrid(columns: adaptiveColumn, spacing: 8) {
+                                        ForEach(playlist.songs, id: \.id) { song in
+                                            // UPDATED: Pass playlist context to SongRow
+                                            SongRow(musicItems: song, playlist: playlist)
+                                                .id("\(song.id)-\(song.customImage != nil)-\(playlist.id)")
+                                        }
                                     }
+                                    
                                 }
-                                
                             }
+                        } else {
+                            ContentUnavailableView(
+                                "Playlist Not Found",
+                                systemImage: "music.note.list",
+                                description: Text("The playlist you're looking for doesn't exist.")
+                            )
                         }
-                    } else {
-                        ContentUnavailableView(
-                            "Playlist Not Found",
-                            systemImage: "music.note.list",
-                            description: Text("The playlist you're looking for doesn't exist.")
-                        )
                     }
                 }
             }
+            .navigationBarTitleDisplayMode(.inline)
         }
-        .navigationBarTitleDisplayMode(.inline)
         .task {
             // Small delay to ensure navigation is stable
             try? await Task.sleep(nanoseconds: 100_000_000)

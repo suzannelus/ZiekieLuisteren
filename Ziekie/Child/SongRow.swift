@@ -46,12 +46,7 @@ struct SongRow: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 120, height: 120)
                         .cornerRadius(12)
-                        .shadow(
-                            color: effectiveColorPalette.primaryColor.opacity(0.8),
-                            radius: 2,
-                            x: 0,
-                            y: 1
-                        )
+                        
                     // Song Info
                     VStack(alignment: .leading, spacing: 4) {
                         Text(musicItems.title)
@@ -70,15 +65,16 @@ struct SongRow: View {
                     }
                 
             }
-            .padding(.vertical, 4)
+            .padding()
             .background(
                 // Subtle background highlight when song is selected
                 RoundedRectangle(cornerRadius: 8)
+                    .fill(.ultraThinMaterial)
                     .fill(
                         
                         isThisSongSelected ?
                         LinearGradient(colors: [effectiveColorPalette.primaryColor.opacity(0.4), .clear], startPoint: .top, endPoint: .bottom):
-                            LinearGradient(colors: [.clear, .clear], startPoint: .top, endPoint: .bottom)
+                            LinearGradient(colors: [Color.white.opacity(0.3), .clear], startPoint: .top, endPoint: .bottom)
                     )
             )
             .overlay(
@@ -148,15 +144,23 @@ struct PlayingIndicator: View {
 }
 
 
-/*
- #Preview {
- SongRow(
- musicItems: MusicItem(
- songID: "test",
- title: "Test Song",
- artworkURL: nil
- ),
- playlist: Playlist(name: "Test Playlist", songs: [])
- )
- }
- */
+
+
+#Preview {
+    let mockPlaylist = Playlist(
+        name: "Kids Songs",
+        songs: [
+            MusicItem(songID: "1", title: "Wheels on the Bus"),
+            MusicItem(songID: "2", title: "Twinkle Twinkle")
+        ]
+    )
+    
+    // Add the playlist to the container so the view can find it
+    let _ = {
+        PlaylistsContainer.shared.playlists = [mockPlaylist]
+    }()
+    
+    return PlaylistDetailView(playlistId: mockPlaylist.id)
+}
+
+

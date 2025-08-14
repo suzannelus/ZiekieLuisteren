@@ -23,6 +23,8 @@
 		5007B98A2E20F8A100C59160 /* Merriweather-Italic-VariableFont_opsz,wdth,wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5007B9882E20F8A100C59160 /* Merriweather-Italic-VariableFont_opsz,wdth,wght.ttf */; };
 		5007B98B2E20F8A100C59160 /* Merriweather-VariableFont_opsz,wdth,wght.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 5007B9892E20F8A100C59160 /* Merriweather-VariableFont_opsz,wdth,wght.ttf */; };
 		5007B9952E21531F00C59160 /* CanvasDottedBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5007B9942E21531F00C59160 /* CanvasDottedBackground.swift */; };
+		503C10902E4CA4BF005B0C72 /* ImagePlaygroundLanguageChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503C108F2E4CA4BF005B0C72 /* ImagePlaygroundLanguageChecker.swift */; };
+		503C10922E4CA654005B0C72 /* ImagePlaygroundOnboardingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 503C10912E4CA654005B0C72 /* ImagePlaygroundOnboardingView.swift */; };
 		5042B0E32E1B0EEE0069CBDE /* SubscriptionStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5042B0E22E1B0EEE0069CBDE /* SubscriptionStatusView.swift */; };
 		508262062E184E06001675FB /* QuicksandFont.swift in Sources */ = {isa = PBXBuildFile; fileRef = 508262052E184E06001675FB /* QuicksandFont.swift */; };
 		5090C5FE2D8F4CC400ED8941 /* PlaylistCreationSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5090C5FD2D8F4CC400ED8941 /* PlaylistCreationSheet.swift */; };
@@ -109,6 +111,8 @@
 		5007B9882E20F8A100C59160 /* Merriweather-Italic-VariableFont_opsz,wdth,wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-Italic-VariableFont_opsz,wdth,wght.ttf"; sourceTree = "<group>"; };
 		5007B9892E20F8A100C59160 /* Merriweather-VariableFont_opsz,wdth,wght.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Merriweather-VariableFont_opsz,wdth,wght.ttf"; sourceTree = "<group>"; };
 		5007B9942E21531F00C59160 /* CanvasDottedBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CanvasDottedBackground.swift; sourceTree = "<group>"; };
+		503C108F2E4CA4BF005B0C72 /* ImagePlaygroundLanguageChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePlaygroundLanguageChecker.swift; sourceTree = "<group>"; };
+		503C10912E4CA654005B0C72 /* ImagePlaygroundOnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePlaygroundOnboardingView.swift; sourceTree = "<group>"; };
 		5042B0DC2E1B069D0069CBDE /* PrivacyPolicyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivacyPolicyView.swift; sourceTree = "<group>"; };
 		5042B0E22E1B0EEE0069CBDE /* SubscriptionStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SubscriptionStatusView.swift; sourceTree = "<group>"; };
 		508262052E184E06001675FB /* QuicksandFont.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QuicksandFont.swift; sourceTree = "<group>"; };
@@ -264,7 +268,6 @@
 				D1633981F8AE8754824EB033 /* MusicPlayerManager.swift */,
 				5090C5FF2D8F52EA00ED8941 /* MusicAuthManager.swift */,
 				3F6D0029299BB6FF007C1652 /* Data.swift */,
-				3F6D005A299CEA56007C1652 /* Onboarding.swift */,
 			);
 			path = Core;
 			sourceTree = "<group>";
@@ -272,6 +275,7 @@
 		50C75B772E28DBD2007DC6C0 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				503C108F2E4CA4BF005B0C72 /* ImagePlaygroundLanguageChecker.swift */,
 				5092CE442E38D60F000E7A10 /* ImageAssetLoader.swift */,
 				5092CE4C2E39EDE2000E7A10 /* canvastest.swift */,
 				5092CE402E38BF11000E7A10 /* PhotoSaver.swift */,
@@ -288,6 +292,8 @@
 		50C75B782E28DC67007DC6C0 /* Child */ = {
 			isa = PBXGroup;
 			children = (
+				503C10912E4CA654005B0C72 /* ImagePlaygroundOnboardingView.swift */,
+				3F6D005A299CEA56007C1652 /* Onboarding.swift */,
 				5092CE4A2E395E3D000E7A10 /* MusicProgressSlider.swift */,
 				5092CE482E39466B000E7A10 /* NowPlayingBar.swift */,
 				3FFA8EDC299D398E0090EDE2 /* HomeView.swift */,
@@ -490,7 +496,9 @@
 				50C75B702E26DBC6007DC6C0 /* ParentPlaylistRow.swift in Sources */,
 				3F6D0075299D2535007C1652 /* SongView.swift in Sources */,
 				5092CE4B2E395E3D000E7A10 /* MusicProgressSlider.swift in Sources */,
+				503C10922E4CA654005B0C72 /* ImagePlaygroundOnboardingView.swift in Sources */,
 				5090C5FE2D8F4CC400ED8941 /* PlaylistCreationSheet.swift in Sources */,
+				503C10902E4CA4BF005B0C72 /* ImagePlaygroundLanguageChecker.swift in Sources */,
 				50A908F72D95795A00545344 /* PlaylistGridView.swift in Sources */,
 				50F38C2A2E3D09A2002F1DBF /* AppIcon.swift in Sources */,
 				50A908F82D99C18100545344 /* MusicPlayerManager.swift in Sources */,
