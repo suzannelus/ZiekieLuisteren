@@ -19,14 +19,15 @@ struct ImagePlaygroundOnboardingView: View {
             // Header
             VStack(spacing: 16) {
                 Image(systemName: "photo.on.rectangle.angled")
+                    .symbolRenderingMode(.palette)
                     .font(.system(size: 60))
-                    .foregroundColor(.blue)
+                    .foregroundStyle(.indigo, .teal)
                 
-                Text("Image Playground Setup")
+                Text("Image Playground Settings")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                 
-                Text("For the best experience, your device language and Siri language should be the same.")
+                Text("Image Playground only works when your device language and Siri language are the same.")
                     .font(.body)
                     .multilineTextAlignment(.center)
                     .foregroundColor(.secondary)
@@ -56,7 +57,7 @@ struct ImagePlaygroundOnboardingView: View {
                 )
             }
             .padding()
-            .background(Color(.systemGray6))
+            .background(Color(.indigo.opacity(0.1)))
             .cornerRadius(12)
             
             // Status Message
@@ -86,7 +87,7 @@ struct ImagePlaygroundOnboardingView: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
-                .background(Color(.systemGray6))
+                .background(Color(.indigo.opacity(0.1)))
                 .cornerRadius(8)
             }
             
@@ -117,15 +118,17 @@ struct ImagePlaygroundOnboardingView: View {
                 }) {
                     Text(viewModel.languageChecker.isImagePlaygroundSupported ? "Continue" : "Skip for Now")
                         .font(.headline)
-                        .foregroundColor(viewModel.languageChecker.isImagePlaygroundSupported ? .white : .blue)
-                        .frame(maxWidth: .infinity)
+                       
+                        .foregroundColor(viewModel.languageChecker.isImagePlaygroundSupported ? .white : .orange)
                         .padding()
-                        .background(viewModel.languageChecker.isImagePlaygroundSupported ? Color.green : Color.clear)
+
+                        .background(viewModel.languageChecker.isImagePlaygroundSupported ? Color.indigo : Color.clear)
                         .overlay(
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(Color.blue, lineWidth: viewModel.languageChecker.isImagePlaygroundSupported ? 0 : 2)
                         )
                         .cornerRadius(10)
+                        
                 }
             }
         }
@@ -146,18 +149,18 @@ struct ImagePlaygroundOnboardingView: View {
     
     private func colorForStatus(_ status: String) -> Color {
         switch status {
-        case "green": return .green
+        case "green": return .teal
         case "orange": return .orange
-        case "red": return .red
+        case "red": return .pink
         default: return .gray
         }
     }
     
     private func backgroundColorForStatus(_ status: String) -> Color {
         switch status {
-        case "green": return Color.green.opacity(0.1)
+        case "green": return Color.teal.opacity(0.1)
         case "orange": return Color.orange.opacity(0.1)
-        case "red": return Color.red.opacity(0.1)
+        case "red": return Color.pink.opacity(0.1)
         default: return Color.gray.opacity(0.1)
         }
     }
@@ -173,7 +176,7 @@ struct LanguageStatusRow: View {
     var body: some View {
         HStack {
             Image(systemName: icon)
-                .foregroundColor(.blue)
+                .foregroundColor(.teal)
                 .frame(width: 20)
             
             VStack(alignment: .leading, spacing: 2) {
@@ -189,7 +192,7 @@ struct LanguageStatusRow: View {
             Spacer()
             
             Image(systemName: isCorrect ? "checkmark.circle.fill" : "exclamationmark.triangle.fill")
-                .foregroundColor(isCorrect ? .green : .orange)
+                .foregroundColor(isCorrect ? .teal : .orange)
         }
     }
 }
@@ -224,7 +227,7 @@ struct ImagePlaygroundLanguageWarning: View {
                         openSettings()
                     }
                     .font(.caption)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.teal)
                     
                     Spacer()
                     
@@ -232,7 +235,7 @@ struct ImagePlaygroundLanguageWarning: View {
                         showFullOnboarding = true
                     }
                     .font(.caption)
-                    .foregroundColor(.blue)
+                    .foregroundColor(.teal)
                 }
             }
             .padding()

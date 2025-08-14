@@ -451,6 +451,7 @@ struct CustomPolaroidCard: View {
                         Image(systemName: "photo.fill")
                             .font(.system(size: 40))
                             .foregroundColor(.white.opacity(0.8))
+                            .aspectRatio(100/100, contentMode: .fit)
                         
                         Text("Custom\nArtwork")
                             .font(.caption)
